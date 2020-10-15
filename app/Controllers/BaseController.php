@@ -18,7 +18,6 @@ use CodeIgniter\Controller;
 
 class BaseController extends Controller
 {
-
 	/**
 	 * An array of helpers to be loaded automatically upon
 	 * class instantiation. These helpers will be available
@@ -43,4 +42,10 @@ class BaseController extends Controller
 		// $this->session = \Config\Services::session();
 	}
 
+	public function renderTemplate($yield) {
+		echo view('templates/header.phtml');
+		echo view('templates/navbar.phtml');
+		echo view($yield);
+		echo view('templates/footer.phtml');
+	}
 }
