@@ -17,7 +17,13 @@
                     Categories
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">"Categories Go Here"</a>
+                    <ul>
+                        <?php foreach ($categories as $category) : ?>
+                            <li>
+                                <a href="?category=<?= $category ?>"><?= $category ?></a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
                 </div>
             </li>
         </ul>

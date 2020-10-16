@@ -1,10 +1,16 @@
-<?php namespace App\Controllers;
+<?php
+
+namespace App\Controllers;
 
 class Home extends BaseController
 {
 	public function index()
 	{
-		return $this->renderTemplate('home/index.phtml');
+		$itemModel = model('App\Models\ItemModel');
+		$data = [
+			"categories" => $itemModel->getCategories()
+		];
+		return $this->renderTemplateView(view('home/index.phtml', $data));
 	}
 
 	//--------------------------------------------------------------------

@@ -1,5 +1,6 @@
-name,category,price,image,rating,quantity
-PS5,Videogames,700,"img/articles/ps5.jpeg",4,1000
-MacBook Pro,Laptops,1500,"img/articles/macbook.jpeg",4,500
-Samsung Monitor,Monitors,300,"img/articles/samsung-monitor.jpeg",5,524
-LG SK9000,Home Theater,4000,"img/articles/samsung-monitor.jpeg",5,200
+name,category,price,image,rating,quantity,description
+PS5,Video Games,700,"img/articles/ps5.jpg",4,1000,Hello world!!
+MacBook Pro,Laptops,1500,"img/articles/macbook.jpg",4,500,Hello world!!
+Samsung Monitor,Monitors,300,"img/articles/samsung-monitor.jpg",5,524,Hello world!!
+LG SK9000,Home Theater,4000,"img/articles/lg-tv.jpg",5,200,Hello world!!
+Animal Crossing New Horizons,Video Games,80,"img/articles/animal-crossing-nintendo-switch.jpg",4.5,550,Hello world!!
