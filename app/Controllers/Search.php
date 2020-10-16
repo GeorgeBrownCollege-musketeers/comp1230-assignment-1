@@ -5,7 +5,7 @@ class Search extends BaseController
 	public function index()
 	{
 		$itemModel = model('App\Models\ItemModel');
-		$items = $itemModel->readItems();
+		$items = $itemModel->getItems();
 		$search = isset($_GET['s']) ? $_GET['s'] : null;
 		if ($search) {
 			$resultSet = [];
