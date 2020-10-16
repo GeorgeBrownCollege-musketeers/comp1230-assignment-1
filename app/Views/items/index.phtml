@@ -1,10 +1,10 @@
-<ul>
+<div class="text-center" role="group">
     <?php foreach ($categories as $category) : ?>
-        <li>
-            <a href="?category=<?= $category ?>"><?= $category ?></a>
-        </li>
+
+        <a class="btn btn-primary" href="?category=<?= $category ?>"><?= $category ?></a>
+
     <?php endforeach; ?>
-</ul>
+</div>
 
 
 <h1>All Items</h1>
@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <h5 class="card-title"><?= $item["name"] ?></h5>
                     <p class="card-text">Item Price: $<?= $item["price"] ?></p>
-                    <p class="card-text"></p>
+                    <p class="card-text"><?= $item["description"] ?></p>
                     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                 </div>
             </div>
