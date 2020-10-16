@@ -8,9 +8,14 @@ class admin extends BaseController
 
 	public function pages($page='index')
 	{
+		$itemModel = model('App\Models\ItemModel');
+		$data = [
+			'items' => $itemModel->getItems(),
+			'categories' => $itemModel->getCategories()
+		];
 		switch ($page) {
 			case 'manage_categories':
-				$this->renderTemplate('admin/manage_categories.phtml');
+				$this->renderTemplateView(view('admin/manage_categories.phtml', $data));
 				break;
 			case 'manage_products':
 				$this->renderTemplate('admin/manage_products.phtml');
