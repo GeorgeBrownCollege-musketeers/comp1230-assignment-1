@@ -48,4 +48,11 @@ class BaseController extends Controller
 		echo view($yield);
 		echo view('templates/footer.phtml');
 	}
+
+	public function renderTemplateView($view) {
+		echo view('templates/header.phtml');
+		echo view('templates/navbar.phtml');
+		echo $view;
+		echo view('templates/footer.phtml');
+	}
 }

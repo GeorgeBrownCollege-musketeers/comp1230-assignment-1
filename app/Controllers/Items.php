@@ -4,7 +4,11 @@ class Items extends BaseController
 {
 	public function index()
 	{
-		$this->renderTemplate('items/index.phtml');
+		$itemModel = model('App\Models\ItemModel');
+		$data = [
+			"items" => $itemModel->readItems()
+		];
+		$this->renderTemplateView(view('items/index.phtml', $data));
 	}
 
 }

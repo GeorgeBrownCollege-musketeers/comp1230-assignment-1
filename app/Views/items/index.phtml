@@ -1,1 +1,14 @@
 <h1>All Items</h1>
+
+<ul>
+    <?php foreach($items as $item): ?>
+        <li>
+            <?= $item["name"] ?>
+        </li>
+    <?php endforeach;?>
+    <pre>
+    <div class="panel panel-default">
+        <div class="panel-heading"><?= var_dump($items)?></div>
+    </div>
+    
+</ul>
