@@ -4,7 +4,7 @@ use CodeIgniter\Model;
 
 class ItemModel extends Model
 {
-    public function readItems() {
+    public function getItems() {
         $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
         $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
         $keys = array_shift($csv);
@@ -16,18 +16,27 @@ class ItemModel extends Model
         return $csv;
     }
 
-    public function readItems1() {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
-        $file = fopen($csvPath,"r");
-        $items = [];
-
-        while(!feof($file)){
-           $items[] = fgetcsv($file);
+    public function getItemsByCategory($category) {
+        $items = $this->getItems();
+        $result = [];
+        foreach($items as $item) {
+            if ($category == $item['category']) {
+                $result[] = $item;
+            }
         }
-        fclose($file);
+        return $result;
+    }
 
-        $titles = array_shift($items);
+    public function getCategories() {
+        $items = $this->getItems();
+        $categories = [];
 
-        return $items;
+        foreach($items as $item) {
+            if (!in_array($item["category"], $categories)) {
+                $categories[] = $item["category"];
+            }
         }
+        return $categories;
+    }
+
 }

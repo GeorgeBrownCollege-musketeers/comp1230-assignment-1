@@ -4,10 +4,25 @@ class Search extends BaseController
 {
 	public function index()
 	{
-        
-        $search = isset($_GET['s']) ? $_GET['s'] : null;
-        echo $search;
-		$this->renderTemplate('search/index.phtml');
+		$itemModel = model('App\Models\ItemModel');
+		$items = $itemModel->readItems();
+		$search = isset($_GET['s']) ? $_GET['s'] : null;
+		if ($search) {
+			$resultSet = [];
+			foreach($items as $item) {
+				if(strpos( strtolower($item['name']), strtolower($search)) !== false ) {
+					$resultSet[] = $item;
+				}
+			}
+			$data = [
+				'items' => $resultSet,
+				'search' => $search
+			];
+			$this->renderTemplateView(view('search/search_result.phtml', $data));
+		} else {
+			$this->renderTemplate('search/index.phtml');
+		}
+		
 	}
 
 }
