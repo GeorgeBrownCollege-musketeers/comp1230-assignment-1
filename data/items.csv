@@ -1,4 +1,5 @@
 name,category,price,image,rating,quantity
-PS5,videogame,700,"articles/pictures/ps5.jpeg",4,1000
-MacBook Pro,laptop,1500,"articles/pictures/macbook.jpeg",4,500
-Samsung Monitor,monitor,300,"articles/pictures/samsung-monitor.jpeg",5,524
+PS5,Videogames,700,"img/articles/ps5.jpeg",4,1000
+MacBook Pro,Laptops,1500,"img/articles/macbook.jpeg",4,500
+Samsung Monitor,Monitors,300,"img/articles/samsung-monitor.jpeg",5,524
+LG SK9000,Home Theater,4000,"img/articles/samsung-monitor.jpeg",5,200

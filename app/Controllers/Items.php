@@ -1,4 +1,6 @@
-<?php namespace App\Controllers;
+<?php
+
+namespace App\Controllers;
 
 class Items extends BaseController
 {
@@ -6,17 +8,16 @@ class Items extends BaseController
 	{
 		$itemModel = model('App\Models\ItemModel');
 		$category = isset($_GET['category']) ? $_GET['category'] : null;
-		if($category) {
+		if ($category) {
 			$items = $itemModel->getItemsByCategory($category);
 		} else {
 			$items = $itemModel->getItems();
 		}
-		
+
 		$data = [
 			"items" => $items,
 			"categories" => $itemModel->getCategories()
 		];
 		$this->renderTemplateView(view('items/index.phtml', $data));
 	}
-
 }
