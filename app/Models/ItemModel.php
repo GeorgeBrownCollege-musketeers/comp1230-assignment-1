@@ -16,6 +16,28 @@ class ItemModel extends Model
         return $csv;
     }
 
+    public function generateID() {
+        $items = $this->getItems();
+        $last_item_id = intval(array_pop($items)['id']);
+        return $last_item_id + 1;
+    } 
+    
+    public function addItem($item) {
+        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
+        $handle = fopen($csvPath, "a");
+        $new_item_row = [
+            $this->generateID(),
+            $item["name"],
+            $item["category"],
+            $item["price"],
+            $item["image"],
+            $item["rating"],
+            $item["quantity"]
+        ];
+        fputcsv($handle, $new_item_row);
+        fclose($handle);
+    }     
+
     public function getItemsByCategory($category) {
         $items = $this->getItems();
         $result = [];
@@ -38,5 +60,4 @@ class ItemModel extends Model
         }
         return $categories;
     }
-
 }

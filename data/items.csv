@@ -1,4 +1,5 @@
-name,category,price,image,rating,quantity
-PS5,videogame,700,"articles/pictures/ps5.jpeg",4,1000
-MacBook Pro,laptop,1500,"articles/pictures/macbook.jpeg",4,500
-Samsung Monitor,monitor,300,"articles/pictures/samsung-monitor.jpeg",5,524
+id,name,category,price,image,rating,quantity
+1,PS5,videogame,700,"articles/pictures/ps5.jpeg",4,1000
+2,MacBook Pro,laptop,1500,"articles/pictures/macbook.jpeg",4,500
+3,Samsung Monitor,monitor,300,"articles/pictures/samsung-monitor.jpeg",5,5244
+4,test,"Not specified",0,/img/no-image.png,0,0
