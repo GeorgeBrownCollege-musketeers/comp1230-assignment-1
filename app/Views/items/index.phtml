@@ -6,8 +6,11 @@
     <?php endforeach; ?>
 </div>
 
-
-<h1>All Items</h1>
+<?php if (isset($_GET['category'])) : ?>
+    <h1><?= $_GET['category'] ?></h1>
+<?php else : ?>
+    <h1>All Items</h1>
+<?php endif ?>
 
 <ul>
     <div class="card-columns">
