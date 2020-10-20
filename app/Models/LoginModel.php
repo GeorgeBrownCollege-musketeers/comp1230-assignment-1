@@ -22,4 +22,5 @@ class LoginModel extends Model
         session_start();
         session_destroy();
     }
+    
 }
