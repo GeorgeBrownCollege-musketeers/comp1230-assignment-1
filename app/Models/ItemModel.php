@@ -16,6 +16,33 @@ class ItemModel extends Model
         return $csv;
     }
 
+    public function deleteItem($itemId) {
+        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
+        $items = $this->getItems();
+        $newItems = [];
+        foreach($items as $item) {
+            if ($item["id"] != $itemId) {
+                $newItems[] = $item;
+            }
+        }
+
+        $header = $this->getHeader();
+        $csv = fopen($csvPath,"w");
+
+        fputcsv($csv, $header);
+        foreach($newItems as $item) {
+            fputcsv($csv, $item);
+        }
+        fclose($csv);
+    }
+
+    public function getHeader() {
+        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
+        $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
+        $header = array_shift($csv);
+        return $header;
+    }
+
     public function generateID() {
         $items = $this->getItems();
         $last_item_id = intval(array_pop($items)['id']);
@@ -59,5 +86,26 @@ class ItemModel extends Model
             }
         }
         return $categories;
+    }
+
+    public function renameCategory($previousCategoryName, $newCategoryName) {
+        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
+        $items = $this->getItems();
+        $newItems = [];
+        foreach($items as $item) {
+            if ($item["category"] == $previousCategoryName) {
+                $item["category"] = $newCategoryName;
+            }
+            $newItems[] = $item;
+        }
+
+        $header = $this->getHeader();
+        $csv = fopen($csvPath,"w");
+
+        fputcsv($csv, $header);
+        foreach($newItems as $item) {
+            fputcsv($csv, $item);
+        }
+        fclose($csv);
     }
 }

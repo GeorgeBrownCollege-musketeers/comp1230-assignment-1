@@ -11,8 +11,15 @@ class LoginModel extends Model
     }
     function login(){
         session_start();
-        $_SESSION["user_logged_in"] == true;
-        exit();
+        $_SESSION["user_logged_in"] = true;
     }
-
+    function userLoggedIn() {
+        session_start();
+        $loggedIn = $_SESSION["user_logged_in"] ?? false;
+        return $loggedIn; 
+    }
+    function logout() {
+        session_start();
+        session_destroy();
+    }
 }
