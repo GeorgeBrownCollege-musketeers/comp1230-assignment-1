@@ -1,9 +1,7 @@
 <div class="container my-5">
     <div class="text-center" role="group">
         <?php foreach ($categories as $category) : ?>
-
-            <a class="btn btn-primary" href="?category=<?= $category ?>"><?= $category ?></a>
-
+            <a class="btn btn-primary" href="?category=<?= $category["name"] ?>"><?= $category["name"] ?></a>
         <?php endforeach; ?>
     </div>
 
