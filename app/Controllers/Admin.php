@@ -1,12 +1,20 @@
-<?php namespace App\Controllers;
+<?php
+
+namespace App\Controllers;
 
 class admin extends BaseController
 {
-	public function index() {
-		$this->renderTemplate('admin/index.phtml');
+	public function index()
+	{
+		$itemModel = model('App\Models\ItemModel');
+		$data = [
+			"categories" => $itemModel->getCategories()
+		];
+
+		$this->renderTemplateView(view('admin/index.phtml', $data));
 	}
 
-	public function pages($page='index')
+	public function pages($page = 'index')
 	{
 		$itemModel = model('App\Models\ItemModel');
 		$data = [
@@ -18,7 +26,7 @@ class admin extends BaseController
 				$this->renderTemplateView(view('admin/manage_categories.phtml', $data));
 				break;
 			case 'manage_products':
-				$this->renderTemplate('admin/manage_products.phtml');
+				$this->renderTemplateView(view('admin/manage_products.phtml', $data));
 				break;
 			case 'add_product':
 				if (!isset($_POST['item_name'])) {
@@ -38,12 +46,11 @@ class admin extends BaseController
 
 				break;
 			case 'change_password':
-				$this->renderTemplate('admin/change_password.phtml');
+				$this->renderTemplateView(view('admin/change_password.phtml', $data));
 				break;
 			default:
 				echo "page not found";
 				break;
 		}
 	}
-
 }

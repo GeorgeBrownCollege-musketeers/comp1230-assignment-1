@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">Website</a>
+    <a class="navbar-brand" href="/">
+        <img src="/img/item-hive.png" width="auto" height="50" alt="" loading="lazy">
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -17,14 +19,16 @@
                     Categories
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">"Categories Go Here"</a>
+                    <?php foreach ($categories as $category) : ?>
+                        <a class="dropdown-item" href="?category=<?= $category ?>"><?= $category ?></a>
+                    <?php endforeach; ?>
                 </div>
             </li>
         </ul>
 
         <form class="form-inline my-2 my-lg-0" action="/search">
             <input class="form-control mr-sm-2" type="search" name="s" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
         </form>
         <ul class="navbar-nav mr">
             <li class="nav-item">
@@ -34,4 +38,3 @@
 
     </div>
 </nav>
-<div class="container py-5">
