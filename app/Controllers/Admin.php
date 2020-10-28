@@ -42,6 +42,7 @@ class admin extends BaseController
 							"image" => !empty($_POST['item_image']) ? $_POST['item_image'] : "/img/no-image.png",
 							"rating" => !empty($_POST['item_rating']) ? $_POST['item_rating'] : 0,
 							"quantity" => !empty($_POST['item_quantity']) ? $_POST['item_quantity'] : 0,
+							"description" => !empty($_POST['item_description']) ? $_POST['item_description'] : "No Description Available",
 						];
 						$itemModel->addItem($item);
 						$this->renderTemplateView(view('admin/item_added.phtml', ["item" => $item]));
@@ -75,6 +76,22 @@ class admin extends BaseController
 			echo "<script>window.location.href='/admin/pages/manage_categories';</script>";	
 		}
 	}
+	
+	public function add_category() {
+		$itemModel = model('App\Models\ItemModel');
+
+		$name =  $_POST['category_name'] ?? false;
+		$description =  $_POST['category_description'] ?? false;
+
+		if ($name && $description) {
+			$itemModel->addCategory($name, $description);
+			echo "<script>window.location.href='/admin/pages/manage_categories';</script>";
+		} else {
+			echo "You must specify the previous category and the new category name.";
+			echo "<script>window.location.href='/admin/pages/manage_categories';</script>";	
+		}
+	}
+
 	public function delete_item() {
 		$itemModel = model('App\Models\ItemModel');
 		$itemId = $_POST['item_id'] ?? false;

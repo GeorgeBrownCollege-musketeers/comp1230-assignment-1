@@ -42,12 +42,24 @@
                 <?php foreach($item as $key=>$value):?>  
                     <?php if ($key == 'image'): ?>
                         <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
+                    <?php elseif ($key == 'category'): ?>
+                        <td>
+                            <select name="<?=$key."-".$value?>">
+                                <?php foreach($categories as $category):?>
+                                    <option <?= $value == $category["name"] ? "selected" : "" ?> value="<?= $category["name"] ?>"><?= $category["name"] ?></option>
+                                <?php endforeach?>
+                            </select>
+                        </td>
                     <?php else: ?>
                         <td><input type="text" name="<?=$key."-".$value?>" value="<?= $value ?>"></td>
                     <?php endif ?>
                 <?php endforeach ?>
                 <td>
                     <input type="submit" value="submit">
+                    <form action="/admin/delete_item" method="POST">
+                        <input type="hidden" name="item_id" value="<?= $item['id']?> ">
+                        <input type="submit" value="Delete">
+                    </form>
                 </td>
             </form>
             </tr>
@@ -59,11 +71,16 @@
 <h2>Add Product</h2>
 <form method="POST" action="add_product" id="add-product-form">
     <input type="text" name="item_name" placeholder="Name">
-    <input type="text" name="item_category" placeholder="Category" >
+    <select name="item_category">
+        <?php foreach($categories as $category):?>
+            <option value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
+        <?php endforeach?>
+    </select>
     <input type="text" name="item_price" placeholder="Price" >
     <input type="text" name="item_image" placeholder="Image" >
     <input type="text" name="item_rating" placeholder="Rating" >
     <input type="text" name="item_quantity" placeholder="Quantity" >
+    <input type="text" name="item_description" placeholder="Description" >
     <input type="submit">
 </form>
 

@@ -56,8 +56,14 @@ class BaseController extends Controller
 	}
 
 	public function renderTemplateView($view) {
+		$loginModel = model('App\Models\LoginModel');
+		$itemModel = model('App\Models\ItemModel');
 		echo view('templates/header.phtml');
-		echo view('templates/navbar.phtml');
+		$data = [
+			'user_is_logged_in' => $_SESSION['user_logged_in'] ?? false,
+			'categories' => $itemModel->getCategories()
+		];
+		echo view('templates/navbar.phtml', $data);
 		echo $view;
 		echo view('templates/footer.phtml');
 	}
