@@ -24,10 +24,37 @@
                     <?php endif ?>
                 <?php endforeach ?>
             </tr>
-            <th></th>
         <?php endforeach ?>
     </tbody>
 </table>
+<table>
+    <thead>
+        <tr>
+            <?php foreach($header as $heading):?>    
+                <th><?= $heading ?></th>
+            <?php endforeach ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($items as $item):?>    
+            <tr>
+            <form action="">
+                <?php foreach($item as $key=>$value):?>  
+                    <?php if ($key == 'image'): ?>
+                        <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
+                    <?php else: ?>
+                        <td><input type="text" name="<?=$key."-".$value?>" value="<?= $value ?>"></td>
+                    <?php endif ?>
+                <?php endforeach ?>
+                <td>
+                    <input type="submit" value="submit">
+                </td>
+            </form>
+            </tr>
+        <?php endforeach ?>
+    </tbody>
+</table>
+
 
 <h2>Add Product</h2>
 <form method="POST" action="add_product" id="add-product-form">
@@ -39,3 +66,4 @@
     <input type="text" name="item_quantity" placeholder="Quantity" >
     <input type="submit">
 </form>
+
