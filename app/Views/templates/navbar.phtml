@@ -20,7 +20,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <?php foreach ($categories as $category) : ?>
-                        <a class="dropdown-item" href="?category=<?= $category ?>"><?= $category ?></a>
+                        <a class="dropdown-item" href="?category=<?= $category["name"] ?>"><?= $category["name"]  ?></a>
                     <?php endforeach; ?>
                 </div>
             </li>
