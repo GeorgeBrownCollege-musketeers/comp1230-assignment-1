@@ -1,76 +1,69 @@
 <?php
-    $itemModel = model('App\Models\ItemModel');
-    $items = $itemModel->getItems();
-    $header = $itemModel->getHeader();
+$itemModel = model('App\Models\ItemModel');
+$items = $itemModel->getItems();
+$header = $itemModel->getHeader();
 ?>
-<h1>Manage Products</h1>
-
-<table>
-    <thead>
-        <tr>
-            <?php foreach($header as $heading):?>    
-                <th><?= $heading ?></th>
-            <?php endforeach ?>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach($items as $item):?>    
-            <tr>
-                <?php foreach($item as $key=>$value):?>  
-                    <?php if ($key == 'image'): ?>
-                        <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
-                    <?php else: ?>
-                        <td><?= $value ?></td>
-                    <?php endif ?>
+<div class="container-fluid my-5">
+    <h1 class="text-center p-3">Manage Products</h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <?php foreach ($header as $heading) : ?>
+                    <th scope="col"><?= $heading ?></th>
                 <?php endforeach ?>
             </tr>
-        <?php endforeach ?>
-    </tbody>
-</table>
-<table>
-    <thead>
-        <tr>
-            <?php foreach($header as $heading):?>    
-                <th><?= $heading ?></th>
+        </thead>
+        <tbody>
+            <?php foreach ($items as $item) : ?>
+                <tr>
+                    <?php foreach ($item as $key => $value) : ?>
+                        <?php if ($key == 'image') : ?>
+                            <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
+                        <?php else : ?>
+                            <td><?= $value ?></td>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                </tr>
             <?php endforeach ?>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach($items as $item):?>    
+        </tbody>
+    </table>
+</div>
+
+<div class="container-fluid">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
             <tr>
-            <form action="">
-                <?php foreach($item as $key=>$value):?>  
-                    <?php if ($key == 'image'): ?>
-                        <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
-                    <?php else: ?>
-                        <td><input type="text" name="<?=$key."-".$value?>" value="<?= $value ?>"></td>
-                    <?php endif ?>
+                <?php foreach ($header as $heading) : ?>
+                    <th><?= $heading ?></th>
                 <?php endforeach ?>
-                <td>
-                    <input type="submit" value="submit">
-                </td>
-            </form>
+                <th>Submit</th>
             </tr>
-        <?php endforeach ?>
-    </tbody>
-</table>
-
-
-<h2>Add Product</h2>
-<form method="POST" action="add_product" id="add-product-form">
-    <input type="text" name="item_name" placeholder="Name">
-    <input type="text" name="item_category" placeholder="Category" >
-    <input type="text" name="item_price" placeholder="Price" >
-    <input type="text" name="item_image" placeholder="Image" >
-    <input type="text" name="item_rating" placeholder="Rating" >
-    <input type="text" name="item_quantity" placeholder="Quantity" >
-    <input type="submit">
-</form>
+        </thead>
+        <tbody>
+            <?php foreach ($items as $item) : ?>
+                <tr>
+                    <form action="">
+                        <?php foreach ($item as $key => $value) : ?>
+                            <?php if ($key == 'image') : ?>
+                                <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
+                            <?php else : ?>
+                                <td><input type="text" class="form-control" name="<?= $key . "-" . $value ?>" value="<?= $value ?>"></td>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                        <td>
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </td>
+                    </form>
+                </tr>
+            <?php endforeach ?>
+        </tbody>
+    </table>
+</div>
 
 <div class="container my-5">
 
-    <form class="p-5 bg-dark text-white rounded" method="POST" action="add_product">
-        <h1 class="text-center">Manage Products</h1>
+    <form class="p-5 bg-dark text-white rounded" method="POST" id="add-product-form" action="add_product">
+        <h1 class="text-center">Add Products</h1>
         <div class="form-group">
             <label>Name</label>
             <input class="form-control" type="text" name="item_name" placeholder="Name">

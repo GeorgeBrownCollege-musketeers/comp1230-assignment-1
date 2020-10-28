@@ -1,23 +1,32 @@
-<h1>Manage Categories</h1>
+<div class="container bg-dark text-light my-5 p-4">
 
-<table>
-    <thead>
-        <tr>
-            <th>Category</th>   
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach($categories as $category):?>
+    <h1 class="text-center p-3">Manage Categories</h1>
+
+    <table class="table table-dark">
+        <thead class="thead">
             <tr>
-                <td>
-                    <form action="/admin/rename_category" method="POST">
-                        <input type="hidden" value="<?= $category['name'] ?>" name="previous_category">
-                        <input type="text" value="<?= $category['name'] ?>" name="new_category">
-                        <input type="text" value="<?= $category['description'] ?>" name="description">
-                        <input type="submit" value="Change">
-                    </form>
-                </td>
+                <th class="text-center">All Current Categories</th>
             </tr>
-        <?php endforeach;?>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <?php foreach ($categories as $category) : ?>
+                <tr>
+                    <td>
+                        <form action="/admin/rename_category" method="POST">
+                            <input type="hidden" value="<?= $category['name'] ?>" name="previous_category">
+
+                            <label>Category</label>
+                            <input class="form-control" type="text" value="<?= $category['name'] ?>" name="new_category">
+
+                            <div class="my-2">
+                                <label>Description</label>
+                                <input class="form-control" type="text" value="<?= $category['description'] ?>" name="description">
+                            </div>
+                            <input class="btn btn-primary" type="submit" value="Change">
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
