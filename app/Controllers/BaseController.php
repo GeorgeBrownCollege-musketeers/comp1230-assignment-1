@@ -44,9 +44,11 @@ class BaseController extends Controller
 
 	public function renderTemplate($yield) {
 		$loginModel = model('App\Models\LoginModel');
+		$itemModel = model('App\Models\ItemModel');
 		echo view('templates/header.phtml');
 		$data = [
-			'user_is_logged_in' => $_SESSION['user_logged_in'] ?? false
+			'user_is_logged_in' => $_SESSION['user_logged_in'] ?? false,
+			'categories' => $itemModel->getCategories()
 		];
 		echo view('templates/navbar.phtml', $data);
 		echo view($yield);
