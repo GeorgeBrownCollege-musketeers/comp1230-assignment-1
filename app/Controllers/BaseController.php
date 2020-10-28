@@ -43,8 +43,12 @@ class BaseController extends Controller
 	}
 
 	public function renderTemplate($yield) {
+		$loginModel = model('App\Models\LoginModel');
 		echo view('templates/header.phtml');
-		echo view('templates/navbar.phtml');
+		$data = [
+			'user_is_logged_in' => $_SESSION['user_logged_in'] ?? false
+		];
+		echo view('templates/navbar.phtml', $data);
 		echo view($yield);
 		echo view('templates/footer.phtml');
 	}
