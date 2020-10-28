@@ -1,5 +1,5 @@
 id,name,category,price,image,rating,quantity
-1,PS5,videogame,700,articles/pictures/ps5.jpeg,4,1000
-2,"MacBook Pro",laptop,1500,articles/pictures/macbook.jpeg,4,500
-3,"Samsung Monitor",monitor,300,articles/pictures/samsung-monitor.jpeg,5,5244
-4,test,"Hello World!",0,/img/no-image.png,0,0
+1,PS5,1,700,articles/pictures/ps5.jpeg,4,1000
+2,"MacBook Pro",2,1500,articles/pictures/macbook.jpeg,4,500
+3,"Samsung Monitor",3,300,articles/pictures/samsung-monitor.jpeg,5,5244
+4,test,4,0,/img/no-image.png,0,0

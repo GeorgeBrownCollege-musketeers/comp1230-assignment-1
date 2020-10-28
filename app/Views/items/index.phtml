@@ -1,7 +1,7 @@
 <ul>
     <?php foreach($categories as $category): ?>
         <li>
-            <a href="?category=<?= $category ?>"><?= $category ?></a>
+            <a href="?category=<?= $category["name"] ?>"><?= $category["name"] ?></a>
         </li>
     <?php endforeach;?> 
 </ul>

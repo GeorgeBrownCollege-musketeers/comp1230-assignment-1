@@ -9,12 +9,37 @@ class ItemModel extends Model
         $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
         $keys = array_shift($csv);
 
+        $categories = $this->getCategories();
+
+        foreach ($csv as $i=>$row) {
+            $csv[$i] = array_combine($keys, $row);
+            $csv[$i]['category'] = $this->getCategoryById($csv[$i]['category']);
+        }
+
+        return $csv;
+    }
+
+    public function getCategories() {
+        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "categories.csv";
+        $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
+        $keys = array_shift($csv);
+
         foreach ($csv as $i=>$row) {
             $csv[$i] = array_combine($keys, $row);
         }
         
         return $csv;
     }
+
+    function getCategoryById($id) {
+        $categories = $this->getCategories();
+        foreach ($categories as $i => $category) {
+            if ($category['id'] === $id) {
+                return $category["name"];
+            }
+        }
+        return null;
+     }
 
     public function deleteItem($itemId) {
         $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
@@ -38,6 +63,13 @@ class ItemModel extends Model
 
     public function getHeader() {
         $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
+        $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
+        $header = array_shift($csv);
+        return $header;
+    }
+
+    public function getCategoryHeader() {
+        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "categories.csv";
         $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
         $header = array_shift($csv);
         return $header;
@@ -76,35 +108,24 @@ class ItemModel extends Model
         return $result;
     }
 
-    public function getCategories() {
-        $items = $this->getItems();
-        $categories = [];
-
-        foreach($items as $item) {
-            if (!in_array($item["category"], $categories)) {
-                $categories[] = $item["category"];
+    public function renameCategory($previousCategoryName, $newCategoryName, $newDescription) {
+        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "categories.csv";
+        $categories = $this->getCategories();
+        $newCategories = [];
+        foreach($categories as $category) {
+            if ($category["name"] == $previousCategoryName) {
+                $category["name"] = $newCategoryName;
+                $category["description"] = $newDescription;
             }
-        }
-        return $categories;
-    }
-
-    public function renameCategory($previousCategoryName, $newCategoryName) {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
-        $items = $this->getItems();
-        $newItems = [];
-        foreach($items as $item) {
-            if ($item["category"] == $previousCategoryName) {
-                $item["category"] = $newCategoryName;
-            }
-            $newItems[] = $item;
+            $newCategories[] = $category;
         }
 
-        $header = $this->getHeader();
+        $header = $this->getCategoryHeader();
         $csv = fopen($csvPath,"w");
 
         fputcsv($csv, $header);
-        foreach($newItems as $item) {
-            fputcsv($csv, $item);
+        foreach($newCategories as $category) {
+            fputcsv($csv, $category);
         }
         fclose($csv);
     }

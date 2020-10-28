@@ -3,8 +3,7 @@
 <table>
     <thead>
         <tr>
-            <th>Category</th>
-            <th>Actions</th>       
+            <th>Category</th>   
         </tr>
     </thead>
     <tbody>
@@ -12,8 +11,9 @@
             <tr>
                 <td>
                     <form action="/admin/rename_category" method="POST">
-                        <input type="hidden" value="<?= $category ?>" name="previous_category">
-                        <input type="text" value="<?= $category ?>" name="new_category">
+                        <input type="hidden" value="<?= $category['name'] ?>" name="previous_category">
+                        <input type="text" value="<?= $category['name'] ?>" name="new_category">
+                        <input type="text" value="<?= $category['description'] ?>" name="description">
                         <input type="submit" value="Change">
                     </form>
                 </td>

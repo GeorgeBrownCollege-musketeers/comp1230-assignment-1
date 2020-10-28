@@ -63,9 +63,10 @@ class admin extends BaseController
 		$itemModel = model('App\Models\ItemModel');
 		$previousCategory = $_POST['previous_category'] ?? false;
 		$newCategory = $_POST['new_category'] ?? false;
+		$description = $_POST['description'] ?? false;
 
 		if ($previousCategory && $newCategory) {
-			$itemModel->renameCategory($previousCategory, $newCategory);
+			$itemModel->renameCategory($previousCategory, $newCategory, $description);
 			echo "<script>window.location.href='/admin/pages/manage_categories';</script>";
 		} else {
 			echo "You must specify the previous category and the new category name.";
@@ -82,5 +83,24 @@ class admin extends BaseController
 			echo "You must specify the item_id.";
 			echo "<script>window.location.href='/admin/pages/manage_products';</script>";
 		}
+	}
+	public function change_password() {
+		$loginModel = model('App\Models\LoginModel');
+		$newPassword = $_POST['new_password'] ?? false;
+
+		if ($newPassword) {
+			$loginModel->changePassword($newPassword);
+			echo "<script>window.location.href='/admin';</script>";
+		} else {
+			echo "You must specify the new password.";
+			echo "<script>window.location.href='/admin/pages/change_password';</script>";
+		}
+	}
+
+	public function logout() {
+		$loginModel = model('App\Models\LoginModel');
+		$loginModel->logout();
+		echo "<script>alert('You closed your session.')</script>";
+		echo "<script>window.location.href='/';</script>";
 	}
 }

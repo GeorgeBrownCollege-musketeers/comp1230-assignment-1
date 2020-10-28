@@ -8,8 +8,8 @@ class Login extends BaseController
 		
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$credentials = $loginModel->getCredentials();
-			if($_POST["username"] == $credentials[0] && md5($_POST["password"]) == $credentials[1]){
-				$loginModel->login();
+			if(array_key_exists($_POST["username"],$credentials) && md5($_POST["password"]) == $credentials[$_POST['username']]){
+				$loginModel->login($_POST["username"]);
 				echo "Redirecting to Admin Page...";
 				echo "<script>window.location.href='/admin';</script>";
 			}
@@ -21,13 +21,6 @@ class Login extends BaseController
 		else{
 			$this->renderTemplate('login/index.phtml');
 		}
-	}
-
-	public function logout() {
-		$loginModel = model('App\Models\LoginModel');
-		$loginModel->logout();
-		echo "<script>alert('You closed your session.')</script>";
-		echo "<script>window.location.href='/';</script>";
 	}
 
 }
