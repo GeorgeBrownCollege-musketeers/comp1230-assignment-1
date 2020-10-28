@@ -1,4 +1,6 @@
-<?php namespace App\Controllers;
+<?php
+
+namespace App\Controllers;
 
 class Login extends BaseController
 {
@@ -22,5 +24,4 @@ class Login extends BaseController
 			$this->renderTemplate('login/index.phtml');
 		}
 	}
-
 }

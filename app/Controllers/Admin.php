@@ -1,4 +1,6 @@
-<?php namespace App\Controllers;
+<?php
+
+namespace App\Controllers;
 
 class admin extends BaseController
 {
@@ -10,10 +12,10 @@ class admin extends BaseController
 			echo "<script>alert('You have to be logged in to see this page!')</script>";
 			echo "<script>window.location.href='/login';</script>";
 		}
-		
+
 	}
 
-	public function pages($page='index')
+	public function pages($page = 'index')
 	{
 		$loginModel = model('App\Models\LoginModel');
 		if ($loginModel->userLoggedIn()) {

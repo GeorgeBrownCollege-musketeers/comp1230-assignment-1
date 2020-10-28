@@ -1,4 +1,6 @@
-<?php namespace App\Controllers;
+<?php
+
+namespace App\Controllers;
 
 class Search extends BaseController
 {
@@ -9,20 +11,22 @@ class Search extends BaseController
 		$search = isset($_GET['s']) ? $_GET['s'] : null;
 		if ($search) {
 			$resultSet = [];
-			foreach($items as $item) {
-				if(strpos( strtolower($item['name']), strtolower($search)) !== false ) {
+			foreach ($items as $item) {
+				if (strpos(strtolower($item['name']), strtolower($search)) !== false) {
 					$resultSet[] = $item;
 				}
 			}
 			$data = [
 				'items' => $resultSet,
-				'search' => $search
+				'search' => $search,
+				'categories' => $itemModel->getCategories()
 			];
 			$this->renderTemplateView(view('search/search_result.phtml', $data));
 		} else {
-			$this->renderTemplate('search/index.phtml');
+			$data = [
+				'categories' => $itemModel->getCategories()
+			];
+			$this->renderTemplateView(view('search/index.phtml', $data));
 		}
-		
 	}
-
 }
