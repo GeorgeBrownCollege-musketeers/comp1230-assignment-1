@@ -33,32 +33,48 @@ $header = $itemModel->getHeader();
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr>
-                <?php foreach ($header as $heading) : ?>
-                    <th><?= $heading ?></th>
-                <?php endforeach ?>
-                <th>Submit</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($items as $item) : ?>
-                <tr>
-                    <form action="">
-                        <?php foreach ($item as $key => $value) : ?>
-                            <?php if ($key == 'image') : ?>
-                                <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
-                            <?php else : ?>
-                                <td><input type="text" class="form-control" name="<?= $key . "-" . $value ?>" value="<?= $value ?>"></td>
-                            <?php endif ?>
-                        <?php endforeach ?>
+            <form action="">
+                <?php foreach($item as $key=>$value):?>  
+                    <?php if ($key == 'image'): ?>
+                        <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
+                    <?php elseif ($key == 'category'): ?>
                         <td>
-                            <input type="submit" class="btn btn-primary" value="Submit">
+                            <select name="<?=$key."-".$value?>">
+                                <?php foreach($categories as $category):?>
+                                    <option <?= $value == $category["name"] ? "selected" : "" ?> value="<?= $category["name"] ?>"><?= $category["name"] ?></option>
+                                <?php endforeach?>
+                            </select>
                         </td>
-                    </form>
-                </tr>
-            <?php endforeach ?>
-        </tbody>
-    </table>
-</div>
+                    <?php else: ?>
+                        <td><input type="text" name="<?=$key."-".$value?>" value="<?= $value ?>"></td>
+                    <?php endif ?>
+                <?php endforeach ?>
+                <td>
+                    <input type="submit" value="submit">
+                    <button onclick="deleteItem(<?= $item['id'] ?>)">Delete Item</button>
+                </td>
+            </form>
+            </tr>
+        <?php endforeach ?>
+    </tbody>
+</table>
+
+
+<h2>Add Product</h2>
+<form method="POST" action="add_product" id="add-product-form">
+    <input type="text" name="item_name" placeholder="Name">
+    <select name="item_category">
+        <?php foreach($categories as $category):?>
+            <option value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
+        <?php endforeach?>
+    </select>
+    <input type="text" name="item_price" placeholder="Price" >
+    <input type="text" name="item_image" placeholder="Image" >
+    <input type="text" name="item_rating" placeholder="Rating" >
+    <input type="text" name="item_quantity" placeholder="Quantity" >
+    <input type="text" name="item_description" placeholder="Description" >
+    <input type="submit">
+</form>
 
 <div class="container my-5">
 
@@ -103,3 +119,14 @@ $header = $itemModel->getHeader();
     </form>
 
 </div>
+
+<script>
+    function deleteItem(id) {
+        var r = confirm("Are you sure you want to delete the item?");
+        if (r) {
+            $.post("/admin/delete_item", {item_id: id}, function(data) {
+                location.reload();
+            })
+        }
+    }
+</script>

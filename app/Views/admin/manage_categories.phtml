@@ -27,6 +27,16 @@
                     </td>
                 </tr>
             <?php endforeach; ?>
+            <tr>
+                <td>
+                    Add category
+                    <form action="/admin/add_category" method="POST">
+                        <input type="text" placeholder="New Category Name" name="category_name">
+                        <input type="text" placeholder="New Category Description" name="category_description">
+                        <input type="submit" value="Submit">
+                    </form>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

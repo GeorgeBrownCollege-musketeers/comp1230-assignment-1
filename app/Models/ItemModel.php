@@ -75,7 +75,7 @@ class ItemModel extends Model
         return $header;
     }
 
-    public function generateID() {
+    public function generateItemID() {
         $items = $this->getItems();
         $last_item_id = intval(array_pop($items)['id']);
         return $last_item_id + 1;
@@ -85,13 +85,14 @@ class ItemModel extends Model
         $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
         $handle = fopen($csvPath, "a");
         $new_item_row = [
-            $this->generateID(),
+            $this->generateItemID(),
             $item["name"],
             $item["category"],
             $item["price"],
             $item["image"],
             $item["rating"],
-            $item["quantity"]
+            $item["quantity"],
+            $item["description"],
         ];
         fputcsv($handle, $new_item_row);
         fclose($handle);
@@ -128,5 +129,19 @@ class ItemModel extends Model
             fputcsv($csv, $category);
         }
         fclose($csv);
+    }
+
+    public function generateCategoryID() {
+        $items = $this->getCategories();
+        $last_item_id = intval(array_pop($items)['id']);
+        return $last_item_id + 1;
+    } 
+
+    public function addCategory($name, $description) {
+        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "categories.csv";
+        $categories = $this->getCategories();
+
+        $handle = fopen($csvPath, "a");
+        fputcsv($handle, [$this->generateCategoryID(), $name, $description]); 
     }
 }
