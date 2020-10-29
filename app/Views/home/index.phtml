@@ -1,5 +1,9 @@
 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
             <img src="img/index-header.png" class="d-block w-100" alt="...">
@@ -40,21 +44,22 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
-    <div class="container my-4">
-        <div class="card-columns">
-            <?php foreach ($items as $item) : ?>
-                <div class="card">
-                    <img class="card-img-top" src="<?= $item["image"] ?>" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= $item["name"] ?></h5>
-                        <p class="card-text">Item Price: $<?= $item["price"] ?></p>
-                        <p class="card-text"><?= $item["description"] ?></p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
+</div>
+<div class="container my-4">
+    <div class="card-columns">
+        <?php foreach ($items as $item) : ?>
+            <div class="card">
+                <img class="card-img-top" src="<?= $item["image"] ?>" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title"><?= $item["name"] ?></h5>
+                    <p class="card-text">Item Price: $<?= $item["price"] ?></p>
+                    <p class="card-text"><?= $item["description"] ?></p>
+                    <a href="/items" class="btn btn-secondary btn-sm"><small>Shop now.</small></a>
                 </div>
-            <?php endforeach; ?>
-        </div>
+            </div>
+        <?php endforeach; ?>
     </div>
+</div>
 
 
 </div>
