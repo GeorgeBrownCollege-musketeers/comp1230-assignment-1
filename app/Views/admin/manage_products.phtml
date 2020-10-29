@@ -56,10 +56,7 @@
                 <?php endforeach ?>
                 <td>
                     <input type="submit" value="submit">
-                    <form action="/admin/delete_item" method="POST">
-                        <input type="hidden" name="item_id" value="<?= $item['id']?> ">
-                        <input type="submit" value="Delete">
-                    </form>
+                    <button onclick="deleteItem(<?= $item['id'] ?>)">Delete Item</button>
                 </td>
             </form>
             </tr>
@@ -127,3 +124,14 @@
     </form>
 
 </div>
+
+<script>
+    function deleteItem(id) {
+        var r = confirm("Are you sure you want to delete the item?");
+        if (r) {
+            $.post("/admin/delete_item", {item_id: id}, function(data) {
+                location.reload();
+            })
+        }
+    }
+</script>

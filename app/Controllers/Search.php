@@ -12,7 +12,7 @@ class Search extends BaseController
 		if ($search) {
 			$resultSet = [];
 			foreach ($items as $item) {
-				if (strpos(strtolower($item['name']), strtolower($search)) !== false) {
+				if (strpos(strtolower($item['name']), strtolower($search)) !== false || strpos(strtolower($item['name']), strtolower($search)) !== false) {
 					$resultSet[] = $item;
 				}
 			}
