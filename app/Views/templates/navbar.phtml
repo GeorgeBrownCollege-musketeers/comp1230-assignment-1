@@ -32,7 +32,7 @@
         </form>
         <ul class="navbar-nav mr">
             <li class="nav-item">
-            <?php if(true):?>
+            <?php if($user_is_logged_in):?>
                 <a class="nav-link mx-2 px-3 bg-light text-dark rounded" href="/admin/logout">Logout</a>
             <?php else:?>
                 <a class="nav-link mx-2 px-3 bg-light text-dark rounded" href="/login">Login</a>

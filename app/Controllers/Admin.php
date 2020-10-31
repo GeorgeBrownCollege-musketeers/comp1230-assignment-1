@@ -22,7 +22,8 @@ class admin extends BaseController
 			$itemModel = model('App\Models\ItemModel');
 			$data = [
 				'items' => $itemModel->getItems(),
-				'categories' => $itemModel->getCategories()
+				'categories' => $itemModel->getCategories(),
+				'itemModel' => $itemModel
 			];
 			switch ($page) {
 				case 'manage_categories':
@@ -38,7 +39,7 @@ class admin extends BaseController
 						$item = [
 							"name" => $_POST['item_name'],
 							"category" => !empty($_POST['item_category']) ? $_POST['item_category'] : "Not specified",
-							"price" => !empty($_POST['item_price']) ? $_POST['item_price'] : 0,
+							"price" => empty($_POST['item_price']) ? "Free" : ($_POST['item_price'] == 0 ? "Free" : $_POST['item_price']),
 							"image" => !empty($_POST['item_image']) ? $_POST['item_image'] : "/img/no-image.png",
 							"rating" => !empty($_POST['item_rating']) ? $_POST['item_rating'] : 0,
 							"quantity" => !empty($_POST['item_quantity']) ? $_POST['item_quantity'] : 0,
@@ -103,6 +104,23 @@ class admin extends BaseController
 			echo "<script>window.location.href='/admin/pages/manage_products';</script>";
 		}
 	}
+
+	public function edit_product() {
+		$itemModel = model('App\Models\ItemModel');
+		$item = [
+			"id" => $_POST['item_id'],
+			"name" => $_POST['item_name'],
+			"category" => !empty($_POST['item_category']) ? $_POST['item_category'] : "Not specified",
+			"price" => empty($_POST['item_price']) ? "Free" : ($_POST['item_price'] == 0 ? "Free" : $_POST['item_price']),
+			"image" => !empty($_POST['item_image']) ? $_POST['item_image'] : "/img/no-image.png",
+			"rating" => !empty($_POST['item_rating']) ? $_POST['item_rating'] : 0,
+			"quantity" => !empty($_POST['item_quantity']) ? $_POST['item_quantity'] : 0,
+			"description" => !empty($_POST['item_description']) ? $_POST['item_description'] : "No Description Available",
+		];
+		var_dump($_POST);
+		$itemModel->editItem($item);
+	}
+
 	public function change_password() {
 		$loginModel = model('App\Models\LoginModel');
 		$newPassword = $_POST['new_password'] ?? false;

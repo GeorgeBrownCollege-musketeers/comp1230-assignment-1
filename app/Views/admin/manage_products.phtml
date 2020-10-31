@@ -32,30 +32,47 @@ $header = $itemModel->getHeader();
 <div class="container-fluid">
     <table class="table table-bordered">
         <thead class="thead-dark">
-            <tr>
-            <form action="">
-                <?php foreach($item as $key=>$value):?>  
-                    <?php if ($key == 'image'): ?>
-                        <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
-                    <?php elseif ($key == 'category'): ?>
-                        <td>
-                            <select name="<?=$key."-".$value?>">
-                                <?php foreach($categories as $category):?>
-                                    <option <?= $value == $category["name"] ? "selected" : "" ?> value="<?= $category["name"] ?>"><?= $category["name"] ?></option>
-                                <?php endforeach?>
-                            </select>
-                        </td>
-                    <?php else: ?>
-                        <td><input type="text" name="<?=$key."-".$value?>" value="<?= $value ?>"></td>
-                    <?php endif ?>
+            <tr class="text-center">
+                <?php foreach ($header as $heading) : ?>
+                    <th scope="col"><?= $heading ?></th>
                 <?php endforeach ?>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($items as $item):?>
+            <tr>
+            <form action="/admin/edit_product" method="POST">
+                    <?php foreach($item as $key=>$value):?> 
+                        <?php if ($key == 'id'): ?>
+                            <input type="hidden" name="item_id" value="<?= $value ?>">
+                            <td><?= $value ?></td>
+                        <?php elseif ($key == 'name'): ?>
+                            <td><input type="text" name="<?="item_".$key?>" value="<?= $value ?>" maxlength="100"></td>
+                        <?php elseif ($key == 'description'): ?>
+                            <td><input type="text" name="<?="item_".$key?>" value="<?= $value ?>" maxlength="255"></td>
+                        <?php elseif ($key == 'image'): ?>
+                            <input type="hidden" name="item_image" value="<?= $value ?>">
+                            <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
+                        <?php elseif ($key == 'category'): ?>
+                            <td>
+                                <select name="<?="item_".$key?>">
+                                    <?php foreach($categories as $category):?>
+                                        <option <?= $value == $category["name"] ? "selected" : "" ?> value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
+                                    <?php endforeach?>
+                                </select>
+                            </td>
+                        <?php else: ?>
+                            <td><input type="text" name="<?="item_".$key?>" value="<?= $value ?>"></td>
+                        <?php endif ?>
+                    <?php endforeach ?>
                 <td>
                     <input type="submit" value="submit">
                     <button onclick="deleteItem(<?= $item['id'] ?>)">Delete Item</button>
                 </td>
-            </form>
+                </form>
+                <?php endforeach ?>
             </tr>
-        <?php endforeach ?>
     </tbody>
 </table>
 

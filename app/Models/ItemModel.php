@@ -19,6 +19,20 @@ class ItemModel extends Model
         return $csv;
     }
 
+    public function getItemsWithCategoryId() {
+        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
+        $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
+        $keys = array_shift($csv);
+
+        $categories = $this->getCategories();
+
+        foreach ($csv as $i=>$row) {
+            $csv[$i] = array_combine($keys, $row);
+        }
+
+        return $csv;
+    }
+
     public function getCategories() {
         $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "categories.csv";
         $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
@@ -109,6 +123,17 @@ class ItemModel extends Model
         return $result;
     }
 
+    public function getNumberOfItemsPerCategory($category) {
+        $items = $this->getItems();
+        $result = [];
+        foreach($items as $item) {
+            if ($category == $item['category']) {
+                $result[] = $item;
+            }
+        }
+        return count($result);
+    }
+
     public function renameCategory($previousCategoryName, $newCategoryName, $newDescription) {
         $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "categories.csv";
         $categories = $this->getCategories();
@@ -127,6 +152,29 @@ class ItemModel extends Model
         fputcsv($csv, $header);
         foreach($newCategories as $category) {
             fputcsv($csv, $category);
+        }
+        fclose($csv);
+    }
+
+    public function editItem($itemToModify) {
+        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
+        $items = $this->getItemsWithCategoryId();
+        $newItems = [];
+        foreach($items as $item) {
+            if ($item['id'] == $itemToModify['id']) {
+                $newItems[] = $itemToModify;
+            } else {
+                $newItems[] = $item;
+            }
+        }
+        echo "<pre>";
+        var_dump($newItems);
+        $header = $this->getHeader();
+        $csv = fopen($csvPath,"w");
+
+        fputcsv($csv, $header);
+        foreach($newItems as $item) {
+            fputcsv($csv, $item);
         }
         fclose($csv);
     }

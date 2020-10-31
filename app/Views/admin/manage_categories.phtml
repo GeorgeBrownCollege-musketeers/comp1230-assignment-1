@@ -14,13 +14,13 @@
                     <td>
                         <form action="/admin/rename_category" method="POST">
                             <input type="hidden" value="<?= $category['name'] ?>" name="previous_category">
-
+                            <div>Number of Items in this category: <?= $itemModel->getNumberOfItemsPerCategory($category['name']) ?></div>
                             <label>Category</label>
-                            <input class="form-control" type="text" value="<?= $category['name'] ?>" name="new_category">
+                            <input class="form-control" type="text" value="<?= $category['name'] ?>" name="new_category" maxlength="60">
 
                             <div class="my-2">
                                 <label>Description</label>
-                                <input class="form-control" type="text" value="<?= $category['description'] ?>" name="description">
+                                <input class="form-control" type="text" value="<?= $category['description'] ?>" name="description" maxlength="100">
                             </div>
                             <input class="btn btn-primary" type="submit" value="Change">
                         </form>
@@ -31,8 +31,8 @@
                 <td>
                     Add category
                     <form action="/admin/add_category" method="POST">
-                        <input type="text" placeholder="New Category Name" name="category_name">
-                        <input type="text" placeholder="New Category Description" name="category_description">
+                        <input type="text" placeholder="New Category Name" name="category_name" maxlength="60">
+                        <input type="text" placeholder="New Category Description" name="category_description" maxlength="100">
                         <input type="submit" value="Submit">
                     </form>
                 </td>
