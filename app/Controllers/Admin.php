@@ -36,11 +36,18 @@ class admin extends BaseController
 					if (!isset($_POST['item_name'])) {
 						echo "You must specify a name";
 					} else {
+						$itemID = $itemModel->generateItemID();
+						$nameOfPicture = $_FILES['item_image']['tmp_name'];
+						$section = explode(".", $_FILES['item_image']['name']);
+						$extension = end($section);
+						$newNamePicture = $itemID . "-" . $_POST['item_name'] . "." . $extension;
+						$imagePath = "/img/articles/" . $newNamePicture;
+						move_uploaded_file($nameOfPicture, "./img/articles/" . $newNamePicture);
 						$item = [
 							"name" => $_POST['item_name'],
 							"category" => !empty($_POST['item_category']) ? $_POST['item_category'] : "Not specified",
 							"price" => empty($_POST['item_price']) ? "Free" : ($_POST['item_price'] == 0 ? "Free" : $_POST['item_price']),
-							"image" => !empty($_POST['item_image']) ? $_POST['item_image'] : "/img/no-image.png",
+							"image" => $imagePath,
 							"rating" => !empty($_POST['item_rating']) ? $_POST['item_rating'] : 0,
 							"quantity" => !empty($_POST['item_quantity']) ? $_POST['item_quantity'] : 0,
 							"description" => !empty($_POST['item_description']) ? $_POST['item_description'] : "No Description Available",

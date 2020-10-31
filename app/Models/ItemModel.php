@@ -62,6 +62,8 @@ class ItemModel extends Model
         foreach($items as $item) {
             if ($item["id"] != $itemId) {
                 $newItems[] = $item;
+            } else {
+                unlink("." . $item['image']); // Delete image
             }
         }
 
