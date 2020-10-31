@@ -18,7 +18,7 @@ $header = $itemModel->getHeader();
                 <tr>
                     <?php foreach ($item as $key => $value) : ?>
                         <?php if ($key == 'image') : ?>
-                            <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
+                            <td><img width="100px" src="<?= $value ?>" alt="<?= $value ?>"></td>
                         <?php else : ?>
                             <td><?= $value ?></td>
                         <?php endif ?>
@@ -53,7 +53,7 @@ $header = $itemModel->getHeader();
                             <td><input type="text" name="<?="item_".$key?>" value="<?= $value ?>" maxlength="255"></td>
                         <?php elseif ($key == 'image'): ?>
                             <input type="hidden" name="item_image" value="<?= $value ?>">
-                            <td><img width="100px" src="/<?= $value ?>" alt="<?= $value ?>"></td>
+                            <td><img width="100px" src="<?= $value ?>" alt="<?= $value ?>"></td>
                         <?php elseif ($key == 'category'): ?>
                             <td>
                                 <select name="<?="item_".$key?>">
