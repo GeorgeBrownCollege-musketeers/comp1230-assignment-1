@@ -41,7 +41,12 @@ class admin extends BaseController
 						$section = explode(".", $_FILES['item_image']['name']);
 						$extension = end($section);
 						$newNamePicture = $itemID . "-" . $_POST['item_name'] . "." . $extension;
-						$imagePath = "/img/articles/" . $newNamePicture;
+						if(empty($nameOfPicture)) {
+							$imagePath = "/img/no-image.png";
+						} else {
+							$imagePath = "/img/articles/" . $newNamePicture;
+						}
+						
 						move_uploaded_file($nameOfPicture, "./img/articles/" . $newNamePicture);
 						$item = [
 							"name" => $_POST['item_name'],

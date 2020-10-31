@@ -63,7 +63,9 @@ class ItemModel extends Model
             if ($item["id"] != $itemId) {
                 $newItems[] = $item;
             } else {
-                unlink("." . $item['image']); // Delete image
+                if ($item['image'] != '/img/no-image.png') {
+                    unlink("." . $item['image']); // Delete image
+                }
             }
         }
 
