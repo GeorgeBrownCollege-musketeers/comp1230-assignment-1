@@ -5,7 +5,7 @@ $header = $itemModel->getHeader();
 ?>
 <div class="container-fluid my-5">
     <h1 class="text-center p-3">Manage Products</h1>
-    <table class="table table-striped">
+    <!-- <table class="table table-striped">
         <thead class="thead-dark">
             <tr class="text-center">
                 <?php foreach ($header as $heading) : ?>
@@ -26,7 +26,7 @@ $header = $itemModel->getHeader();
                 </tr>
             <?php endforeach ?>
         </tbody>
-    </table>
+    </table> -->
 </div>
 
 <div class="container-fluid">
@@ -50,7 +50,7 @@ $header = $itemModel->getHeader();
                         <?php elseif ($key == 'name'): ?>
                             <td><input type="text" name="<?="item_".$key?>" value="<?= $value ?>" maxlength="100"></td>
                         <?php elseif ($key == 'description'): ?>
-                            <td><input type="text" name="<?="item_".$key?>" value="<?= $value ?>" maxlength="255"></td>
+                            <td><textarea name="<?="item_".$key?>" maxlength="255"><?= $value ?></textarea></td>
                         <?php elseif ($key == 'image'): ?>
                             <input type="hidden" name="item_image" value="<?= $value ?>">
                             <td><img width="100px" src="<?= $value ?>" alt="<?= $value ?>"></td>
@@ -67,8 +67,8 @@ $header = $itemModel->getHeader();
                         <?php endif ?>
                     <?php endforeach ?>
                 <td>
-                    <input type="submit" value="submit">
-                    <button onclick="deleteItem(<?= $item['id'] ?>)">Delete Item</button>
+                    <input type="submit" value="Edit">
+                    <button onclick="deleteItem(<?= $item['id'] ?>)">Delete</button>
                 </td>
                 </form>
                 <?php endforeach ?>

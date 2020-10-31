@@ -18,7 +18,8 @@ class Items extends BaseController
 		$data = [
 			"items" => $items,
 			"categories" => $itemModel->getCategories(),
-			"user_is_logged_in" => $loginModel->userLoggedIn()
+			"user_is_logged_in" => $loginModel->userLoggedIn(),
+			"itemModel" => $itemModel
 		];
 		$this->renderTemplateView(view('items/index.phtml', $data));
 	}

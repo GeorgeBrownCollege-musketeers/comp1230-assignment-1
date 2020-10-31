@@ -57,7 +57,7 @@ class ItemModel extends Model
 
     public function deleteItem($itemId) {
         $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
-        $items = $this->getItems();
+        $items = $this->getItemsWithCategoryId();
         $newItems = [];
         foreach($items as $item) {
             if ($item["id"] != $itemId) {

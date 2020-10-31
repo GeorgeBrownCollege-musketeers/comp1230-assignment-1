@@ -7,7 +7,7 @@
             </a>
             <?php foreach ($categories as $category) : ?>
                 <a href="?category=<?= $category["name"] ?>" class="list-group-item list-group-item-action">
-                    <h5 class="mb-1"><?= $category["name"] ?></h5>
+                    <h5 class="mb-1"><?= $category["name"] ?> (<?= $itemModel->getNumberOfItemsPerCategory($category["name"])?>)</h5>
                     <p class="mb-1"><?= $category["description"] ?></p>
                 </a>
             <?php endforeach; ?>
