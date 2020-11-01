@@ -3,9 +3,14 @@ $itemModel = model('App\Models\ItemModel');
 $items = $itemModel->getItems();
 $header = $itemModel->getHeader();
 ?>
-<div class="container-fluid my-5">
+<div class="container-fluid mt-5">
     <h1 class="text-center p-3">Manage Products</h1>
-    <!-- <table class="table table-striped">
+    <div class="custom-control custom-switch">
+        <input type="checkbox" onchange="switchTable()" class="custom-control-input" id="customSwitch1" checked>
+        <label class="custom-control-label" for="customSwitch1">Edit-Info</label>
+    </div>
+
+    <table id="table-info" class="table table-striped">
         <thead class="thead-dark">
             <tr class="text-center">
                 <?php foreach ($header as $heading) : ?>
@@ -26,10 +31,10 @@ $header = $itemModel->getHeader();
                 </tr>
             <?php endforeach ?>
         </tbody>
-    </table> -->
+    </table>
 </div>
 
-<div class="container-fluid">
+<div style="display: none;" id="table-edit" class="container-fluid">
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr class="text-center">
@@ -40,110 +45,81 @@ $header = $itemModel->getHeader();
             </tr>
         </thead>
         <tbody>
-            <?php foreach($items as $item):?>
-            <tr>
-            <form action="/admin/edit_product" method="POST">
-                    <?php foreach($item as $key=>$value):?> 
-                        <?php if ($key == 'id'): ?>
-                            <input type="hidden" name="item_id" value="<?= $value ?>">
-                            <td><?= $value ?></td>
-                        <?php elseif ($key == 'name'): ?>
-                            <td><input type="text" name="<?="item_".$key?>" value="<?= $value ?>" maxlength="100"></td>
-                        <?php elseif ($key == 'description'): ?>
-                            <td><textarea name="<?="item_".$key?>" maxlength="255"><?= $value ?></textarea></td>
-                        <?php elseif ($key == 'image'): ?>
-                            <input type="hidden" name="item_image" value="<?= $value ?>">
-                            <td><img width="100px" src="<?= $value ?>" alt="<?= $value ?>"></td>
-                        <?php elseif ($key == 'category'): ?>
-                            <td>
-                                <select name="<?="item_".$key?>">
-                                    <?php foreach($categories as $category):?>
-                                        <option <?= $value == $category["name"] ? "selected" : "" ?> value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
-                                    <?php endforeach?>
-                                </select>
-                            </td>
-                        <?php else: ?>
-                            <td><input type="text" name="<?="item_".$key?>" value="<?= $value ?>"></td>
-                        <?php endif ?>
-                    <?php endforeach ?>
-                <td>
-                    <input type="submit" value="Edit">
-                    <button onclick="deleteItem(<?= $item['id'] ?>)">Delete</button>
-                </td>
-                </form>
+            <?php foreach ($items as $item) : ?>
+                <tr>
+                    <form action="/admin/edit_product" method="POST">
+                        <?php foreach ($item as $key => $value) : ?>
+                            <?php if ($key == 'id') : ?>
+                                <input class="form-control" type="hidden" name="item_id" value="<?= $value ?>">
+                                <td><?= $value ?></td>
+                            <?php elseif ($key == 'name') : ?>
+                                <td><input class="form-control" type="text" name="<?= "item_" . $key ?>" value="<?= $value ?>" maxlength="100"></td>
+                            <?php elseif ($key == 'description') : ?>
+                                <td><textarea class="form-control" name="<?= "item_" . $key ?>" maxlength="255"><?= $value ?></textarea></td>
+                            <?php elseif ($key == 'image') : ?>
+                                <input type="hidden" name="item_image" value="<?= $value ?>">
+                                <td><img width="100px" src="<?= $value ?>" alt="<?= $value ?>"></td>
+                            <?php elseif ($key == 'category') : ?>
+                                <td>
+                                    <select class="form-control" name="<?= "item_" . $key ?>">
+                                        <?php foreach ($categories as $category) : ?>
+                                            <option <?= $value == $category["name"] ? "selected" : "" ?> value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </td>
+                            <?php else : ?>
+                                <td><input class="form-control" type="text" name="<?= "item_" . $key ?>" value="<?= $value ?>"></td>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                        <td>
+                            <input type="submit" class="btn btn-secondary" value="Edit">
+                            <button class="btn btn-danger" onclick="deleteItem(<?= $item['id'] ?>)">Delete</button>
+                        </td>
+                    </form>
                 <?php endforeach ?>
-            </tr>
-    </tbody>
-</table>
+                </tr>
+        </tbody>
+    </table>
+
+    <div class="bg-dark p-5 mb-2 text-light">
+        <h2>Add Product</h2>
+        <form method="POST" action="add_product" id="add-product-form" enctype="multipart/form-data" class="form-inline">
+            <input type="text" class="form-control mx-2" name="item_name" placeholder="Name">
+            <select class="form-control mx-2" name="item_category">
+                <?php foreach ($categories as $category) : ?>
+                    <option value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
+                <?php endforeach ?>
+            </select>
+            <input type="text" class="form-control mx-2" name="item_price" placeholder="Price">
+            <input type="file" name="item_image" placeholder="Image">
+            <input type="text" class="form-control mx-2" name="item_rating" placeholder="Rating">
+            <input type="text" class="form-control mx-2" name="item_quantity" placeholder="Quantity">
+            <input type="text" class="form-control mx-2" name="item_description" placeholder="Description">
+            <input class="btn btn-primary mx-2" type="submit" value="Add">
+        </form>
+    </div>
 
 
-<h2>Add Product</h2>
-<form method="POST" action="add_product" id="add-product-form" enctype="multipart/form-data">
-    <input type="text" name="item_name" placeholder="Name">
-    <select name="item_category">
-        <?php foreach($categories as $category):?>
-            <option value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
-        <?php endforeach?>
-    </select>
-    <input type="text" name="item_price" placeholder="Price" >
-    <input type="file" name="item_image" placeholder="Image" >
-    <input type="text" name="item_rating" placeholder="Rating" >
-    <input type="text" name="item_quantity" placeholder="Quantity" >
-    <input type="text" name="item_description" placeholder="Description" >
-    <input type="submit">
-</form>
-
-<div class="container my-5">
-
-    <form class="p-5 bg-dark text-white rounded" method="POST" id="add-product-form" action="add_product">
-        <h1 class="text-center">Add Products</h1>
-        <div class="form-group">
-            <label>Name</label>
-            <input class="form-control" type="text" name="item_name" placeholder="Name">
-        </div>
-        <div class="form-group">
-            <label>Category</label>
-            <input class="form-control" type="text" name="item_category" placeholder="Category">
-        </div>
-        <div class="form-group">
-            <label>Price</label>
-            <input class="form-control" type="text" name="item_price" placeholder="Price">
-        </div>
-        <div class="form-group">
-
-            <label>Image</label>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroupFileAddon01">Upload Image</span>
-                </div>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="item_image" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                    <label class="custom-file-label" for="inputGroupFile01">Choose Image</label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>Rating</label>
-            <input class="form-control" type="text" name="item_rating" placeholder="Rating">
-        </div>
-        <div class="form-group">
-            <label>Quantity</label>
-            <input class="form-control" type="text" name="item_quantity" placeholder="Quantity">
-        </div>
-        <div class="form-group">
-            <input class="btn btn-primary" type="submit">
-        </div>
-    </form>
-
-</div>
-
-<script>
-    function deleteItem(id) {
-        var r = confirm("Are you sure you want to delete the item?");
-        if (r) {
-            $.post("/admin/delete_item", {item_id: id}, function(data) {
-                location.reload();
-            })
+    <script>
+        function deleteItem(id) {
+            var r = confirm("Are you sure you want to delete the item?");
+            if (r) {
+                $.post("/admin/delete_item", {
+                    item_id: id
+                }, function(data) {
+                    location.reload();
+                })
+            }
         }
-    }
-</script>
+
+        function switchTable() {
+            var tableOne = document.getElementById("table-info");
+            var tableTwo = document.getElementById("table-edit");
+            var checkBox = document.getElementById("customSwitch1")
+
+            tableOne.style.display = (
+                tableOne.style.display == "none" ? "block" : "none");
+            tableTwo.style.display = (
+                tableTwo.style.display == "none" ? "block" : "none");
+        }
+    </script>
