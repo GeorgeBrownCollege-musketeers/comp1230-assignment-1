@@ -1,4 +1,30 @@
-<pre>
-<?php 
+<div class="container-fluid  p-5">
 
-var_dump($item);
+
+
+    <div class="text-center">
+        <h3>Congratulations for adding a product!</h3>
+        <p>You can see your item details below. Please make sure everything is in correct format.</p>
+    </div>
+
+    <hr>
+    <div class="container">
+        <div class="card m-5">
+            <img class="card-img-top" src="<?= $item["image"] ?>" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title"><?= $item["name"] ?></h5>
+                <p class="card-text">Item Price: $<?= $item["price"] ?></p>
+                <p class="card-text"><?= $item["description"] ?></p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a class="btn btn-primary" href="/items">Go to Items</a>
+        <a class="btn btn-primary" href="/admin/pages/manage_products">Change Product</a>
+    </div>
+
+</div>
+
+<pre>

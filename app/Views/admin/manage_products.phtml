@@ -5,12 +5,11 @@ $header = $itemModel->getHeader();
 ?>
 <div class="container-fluid mt-5">
     <h1 class="text-center p-3">Manage Products</h1>
-    <div class="custom-control custom-switch">
-        <input type="checkbox" onchange="switchTable()" class="custom-control-input" id="customSwitch1" checked>
+    <!-- <div class="custom-control custom-switch">
+        <input type="checkbox" onchange="switchTable()" class="custom-control-input" id="customSwitch1">
         <label class="custom-control-label" for="customSwitch1">Edit-Info</label>
-    </div>
-
-    <table id="table-info" class="table table-striped">
+    </div> -->
+    <!-- <table id="table-info" class="table table-striped">
         <thead class="thead-dark">
             <tr class="text-center">
                 <?php foreach ($header as $heading) : ?>
@@ -31,10 +30,30 @@ $header = $itemModel->getHeader();
                 </tr>
             <?php endforeach ?>
         </tbody>
-    </table>
+    </table>-->
 </div>
 
-<div style="display: none;" id="table-edit" class="container-fluid">
+<div class="bg-dark text-light form-row align-items-center p-5 m-3 rounded justify-content-center">
+    <h2 class="p-2 ">Add Product</h2>
+    <form method="POST" action="add_product" id="add-product-form" enctype="multipart/form-data" class="form-inline">
+        <input type="text" class="form-control m-1" name="item_name" placeholder="Name">
+        <select class="form-control m-1" name="item_category">
+            <?php foreach ($categories as $category) : ?>
+                <option value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
+            <?php endforeach ?>
+        </select>
+        <input type="text" class="form-control m-1" name="item_price" placeholder="Price">
+
+        <input type="file" class="btn btn-light m-1" name="item_image" placeholder="Image">
+
+        <input type="text" class="form-control m-1" name="item_rating" placeholder="Rating">
+        <input type="text" class="form-control m-1" name="item_quantity" placeholder="Quantity">
+        <input type="text" class="form-control m-1" name="item_description" placeholder="Description">
+        <input class="btn btn-primary m-1" type="submit" value="Add Product">
+    </form>
+</div>
+
+<div id="table-edit" class="container-fluid">
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr class="text-center">
@@ -72,33 +91,14 @@ $header = $itemModel->getHeader();
                             <?php endif ?>
                         <?php endforeach ?>
                         <td>
-                            <input type="submit" class="btn btn-secondary" value="Edit">
-                            <button class="btn btn-danger" onclick="deleteItem(<?= $item['id'] ?>)">Delete</button>
+                            <input type="submit" class="btn btn-secondary mt-1" value="Update">
+                            <button class="btn btn-danger mt-1" onclick="deleteItem(<?= $item['id'] ?>)">Delete</button>
                         </td>
                     </form>
                 <?php endforeach ?>
                 </tr>
         </tbody>
     </table>
-
-    <div class="bg-dark p-5 mb-2 text-light">
-        <h2>Add Product</h2>
-        <form method="POST" action="add_product" id="add-product-form" enctype="multipart/form-data" class="form-inline">
-            <input type="text" class="form-control mx-2" name="item_name" placeholder="Name">
-            <select class="form-control mx-2" name="item_category">
-                <?php foreach ($categories as $category) : ?>
-                    <option value="<?= $category["id"] ?>"><?= $category["name"] ?></option>
-                <?php endforeach ?>
-            </select>
-            <input type="text" class="form-control mx-2" name="item_price" placeholder="Price">
-            <input type="file" name="item_image" placeholder="Image">
-            <input type="text" class="form-control mx-2" name="item_rating" placeholder="Rating">
-            <input type="text" class="form-control mx-2" name="item_quantity" placeholder="Quantity">
-            <input type="text" class="form-control mx-2" name="item_description" placeholder="Description">
-            <input class="btn btn-primary mx-2" type="submit" value="Add">
-        </form>
-    </div>
-
 
     <script>
         function deleteItem(id) {

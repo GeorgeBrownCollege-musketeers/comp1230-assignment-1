@@ -4,7 +4,8 @@ namespace App\Controllers;
 
 class admin extends BaseController
 {
-	public function index() {
+	public function index()
+	{
 		$loginModel = model('App\Models\LoginModel');
 		if ($loginModel->userLoggedIn()) {
 			$this->renderTemplate('admin/index.phtml');
@@ -12,7 +13,6 @@ class admin extends BaseController
 			echo "<script>alert('You have to be logged in to see this page!')</script>";
 			echo "<script>window.location.href='/login';</script>";
 		}
-
 	}
 
 	public function pages($page = 'index')
@@ -41,12 +41,12 @@ class admin extends BaseController
 						$section = explode(".", $_FILES['item_image']['name']);
 						$extension = end($section);
 						$newNamePicture = $itemID . "-" . $_POST['item_name'] . "." . $extension;
-						if(empty($nameOfPicture)) {
+						if (empty($nameOfPicture)) {
 							$imagePath = "/img/no-image.png";
 						} else {
 							$imagePath = "/img/articles/" . $newNamePicture;
 						}
-						
+
 						move_uploaded_file($nameOfPicture, "./img/articles/" . $newNamePicture);
 						$item = [
 							"name" => $_POST['item_name'],
@@ -71,11 +71,12 @@ class admin extends BaseController
 			}
 		} else {
 			echo "<script>alert('You have to be logged in to see this page!')</script>";
-			echo "<script>window.location.href='/login';</script>";			
+			echo "<script>window.location.href='/login';</script>";
 		}
 	}
 
-	public function rename_category() {
+	public function rename_category()
+	{
 		$itemModel = model('App\Models\ItemModel');
 		$previousCategory = $_POST['previous_category'] ?? false;
 		$newCategory = $_POST['new_category'] ?? false;
@@ -86,11 +87,12 @@ class admin extends BaseController
 			echo "<script>window.location.href='/admin/pages/manage_categories';</script>";
 		} else {
 			echo "You must specify the previous category and the new category name.";
-			echo "<script>window.location.href='/admin/pages/manage_categories';</script>";	
+			echo "<script>window.location.href='/admin/pages/manage_categories';</script>";
 		}
 	}
-	
-	public function add_category() {
+
+	public function add_category()
+	{
 		$itemModel = model('App\Models\ItemModel');
 
 		$name =  $_POST['category_name'] ?? false;
@@ -101,11 +103,12 @@ class admin extends BaseController
 			echo "<script>window.location.href='/admin/pages/manage_categories';</script>";
 		} else {
 			echo "You must specify the previous category and the new category name.";
-			echo "<script>window.location.href='/admin/pages/manage_categories';</script>";	
+			echo "<script>window.location.href='/admin/pages/manage_categories';</script>";
 		}
 	}
 
-	public function delete_item() {
+	public function delete_item()
+	{
 		$itemModel = model('App\Models\ItemModel');
 		$itemId = $_POST['item_id'] ?? false;
 		if ($itemId) {
@@ -117,7 +120,8 @@ class admin extends BaseController
 		}
 	}
 
-	public function edit_product() {
+	public function edit_product()
+	{
 		$itemModel = model('App\Models\ItemModel');
 		$item = [
 			"id" => $_POST['item_id'],
@@ -129,11 +133,12 @@ class admin extends BaseController
 			"quantity" => !empty($_POST['item_quantity']) ? $_POST['item_quantity'] : 0,
 			"description" => !empty($_POST['item_description']) ? $_POST['item_description'] : "No Description Available",
 		];
-		var_dump($_POST);
+		echo "<script>window.location.href='/admin/pages/manage_products';</script>";
 		$itemModel->editItem($item);
 	}
 
-	public function change_password() {
+	public function change_password()
+	{
 		$loginModel = model('App\Models\LoginModel');
 		$newPassword = $_POST['new_password'] ?? false;
 
@@ -146,7 +151,8 @@ class admin extends BaseController
 		}
 	}
 
-	public function logout() {
+	public function logout()
+	{
 		$loginModel = model('App\Models\LoginModel');
 		$loginModel->logout();
 		echo "<script>alert('You closed your session.')</script>";
