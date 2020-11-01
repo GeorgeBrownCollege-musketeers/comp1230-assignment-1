@@ -11,7 +11,36 @@
         </div>
     </form>
 
+    <div class="container my-5">
+
+        <?php if (isset($_GET['category'])) : ?>
+            <h1><?= $_GET['category'] ?></h1>
+        <?php else : ?>
+            <h1>All Items</h1>
+        <?php endif ?>
+
+        <ul>
+            <div class="card-columns">
+                <?php foreach ($items as $item) : ?>
+
+
+                    <div class="card">
+                        <img class="card-img-top" src="<?= $item["image"] ?>" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $item["name"] ?></h5>
+                            <p class="card-text">Item Price: $<?= $item["price"] ?></p>
+                            <p class="card-text"><?= $item["description"] ?></p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
+                        </div>
+                    </div>
+
+                <?php endforeach; ?>
+            </div>
+        </ul>
+    </div>
+
     <pre>
-        <?= var_dump($items); ?>
+        <!-- <?= var_dump($items); ?> -->
         
 </div>

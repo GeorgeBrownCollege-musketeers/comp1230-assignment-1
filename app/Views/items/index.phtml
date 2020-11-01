@@ -1,52 +1,53 @@
-<div class="d-flex justify-content-center">
-    <div class="list-group m-5">
-        <h1>Categories</h1>
-        <div class="btn-group-vertical my-3" role="group">
-            <a class="btn btn-secondary" href="/items">
-                <h5 class="mb-1">All Items</h5>
-            </a>
-            <?php foreach ($categories as $category) : ?>
-                <a href="?category=<?= $category["name"] ?>" class="list-group-item list-group-item-action">
-                    <h5 class="mb-1"><?= $category["name"] ?> (<?= $itemModel->getNumberOfItemsPerCategory($category["name"])?>)</h5>
-                    <p class="mb-1"><?= $category["description"] ?></p>
+<div id="bg">
+    <div class="d-flex justify-content-center">
+        <div class="list-group m-5">
+            <h1>Categories</h1>
+            <div class="btn-group-vertical my-3" role="group">
+                <a class="btn btn-secondary" href="/items">
+                    <h5 class="mb-1">All Items</h5>
                 </a>
-            <?php endforeach; ?>
-        </div>
-    </div>
-
-    <div class="container my-5">
-
-        <?php if (isset($_GET['category'])) : ?>
-            <h1><?= $_GET['category'] ?></h1>
-        <?php else : ?>
-            <h1>All Items</h1>
-        <?php endif ?>
-
-        <ul>
-            <div class="card-columns">
-                <?php foreach ($items as $item) : ?>
-
-
-                    <div class="card">
-                        <img class="card-img-top" src="<?= $item["image"] ?>" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= $item["name"] ?></h5>
-                            <p class="card-text">Item Price: $<?= $item["price"] ?></p>
-                            <p class="card-text"><?= $item["description"] ?></p>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                            <?php if($user_is_logged_in): ?>
-                                <a href="/admin/pages/manage_products">Edit Product</a>
-                            <?php endif ?>
-                        </div>
-                    </div>
-
+                <?php foreach ($categories as $category) : ?>
+                    <a href="?category=<?= $category["name"] ?>" class="list-group-item list-group-item-action">
+                        <h5 class="mb-1"><?= $category["name"] ?> (<?= $itemModel->getNumberOfItemsPerCategory($category["name"]) ?>)</h5>
+                        <p class="mb-1"><?= $category["description"] ?></p>
+                    </a>
                 <?php endforeach; ?>
             </div>
-            <pre>
+            <img src="/img/logo-black-text.svg" alt="logo" width="400px" class="p-3 m-5">
+        </div>
+
+        <div class="container my-5">
+
+            <?php if (isset($_GET['category'])) : ?>
+                <h1><?= $_GET['category'] ?></h1>
+            <?php else : ?>
+                <h1>All Items</h1>
+            <?php endif ?>
+
+            <ul>
+                <div class="card-columns">
+                    <?php foreach ($items as $item) : ?>
+
+                        <div class="card">
+                            <img class="card-img-top" src="<?= $item["image"] ?>" alt="Card image cap">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= $item["name"] ?></h5>
+                                <p class="card-text">Item Price: $<?= $item["price"] ?></p>
+                                <p class="card-text"><?= $item["description"] ?></p>
+                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                <?php if ($user_is_logged_in) : ?>
+                                    <a href="/admin/pages/manage_products">Edit Product</a>
+                                <?php endif ?>
+                            </div>
+                        </div>
+
+                    <?php endforeach; ?>
+                </div>
+                <pre>
                             <div class="panel panel-default">
-                                <div class="panel-heading"><?= var_dump($items) ?></div>
+                                <!-- <div class="panel-heading"><?= var_dump($items) ?></div> -->
                             </div>
                             
                         </ul>
-</div>
+    </div>
 </div>
