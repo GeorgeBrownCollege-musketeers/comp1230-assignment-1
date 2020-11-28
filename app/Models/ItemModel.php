@@ -5,18 +5,14 @@ use CodeIgniter\Model;
 class ItemModel extends Model
 {
     public function getItems() {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
-        $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
-        $keys = array_shift($csv);
+        $db = db_connect();
 
-        $categories = $this->getCategories();
-
-        foreach ($csv as $i=>$row) {
-            $csv[$i] = array_combine($keys, $row);
-            $csv[$i]['category'] = $this->getCategoryById($csv[$i]['category']);
+        $query = $db->query("SELECT * FROM ITEMS");
+        
+        foreach($query as $item){
+            var_dump($item);
         }
-
-        return $csv;
+        return $query;    
     }
 
     public function getItemsWithCategoryId() {
