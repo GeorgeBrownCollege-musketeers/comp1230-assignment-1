@@ -8,37 +8,48 @@ class ItemModel extends Model
         $db = db_connect();
 
         $query = $db->query("SELECT * FROM ITEMS");
-        
-        foreach($query as $item){
-            var_dump($item);
+        $results = $query->getResult();
+        $items = [];
+
+
+        foreach($results as $item){
+            
+            $items[] = [
+                "id" => $item->id,
+                "name" => $item->title,
+                "category" => $item->cat_id,
+                "price" => $item->price,
+                "image" => $item->picture1,
+                "quantity" => 0,
+                "description" => $item->description,
+                "rating" => $item->rating
+            ];
         }
-        return $query;    
+        return $items;    
     }
 
     public function getItemsWithCategoryId() {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
-        $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
-        $keys = array_shift($csv);
-
         $categories = $this->getCategories();
-
-        foreach ($csv as $i=>$row) {
-            $csv[$i] = array_combine($keys, $row);
-        }
-
-        return $csv;
+        return $categories;
     }
 
     public function getCategories() {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "categories.csv";
-        $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
-        $keys = array_shift($csv);
+        $db = db_connect();
+        $query = $db->query("SELECT * FROM categories");
+        $results = $query->getResult();
+        $categories = [];
 
-        foreach ($csv as $i=>$row) {
-            $csv[$i] = array_combine($keys, $row);
+
+        foreach($results as $category){
+            
+            $categories[] = [
+                "id" => $category->id,
+                "name" => $category->name,
+                "description" => $category->description,
+                "status" => $category->status
+            ];
         }
-        
-        return $csv;
+        return $categories;  
     }
 
     function getCategoryById($id) {
