@@ -24,7 +24,7 @@ $header = $itemModel->getHeader();
                         <?php if ($key == 'image') : ?>
                             <td><img width="100px" src="<?= $value ?>" alt="<?= $value ?>"></td>
                         <?php else : ?>
-                            <td><?= $value ?></td>
+                            <td><?= $value ?> </td>
                         <?php endif ?>
                     <?php endforeach ?>
                 </tr>
@@ -110,6 +110,7 @@ $header = $itemModel->getHeader();
                     location.reload();
                 })
             }
+            return false;
         }
 
         function switchTable() {

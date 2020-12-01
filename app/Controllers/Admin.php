@@ -36,11 +36,10 @@ class admin extends BaseController
 					if (!isset($_POST['item_name'])) {
 						echo "You must specify a name";
 					} else {
-						$itemID = $itemModel->generateItemID();
 						$nameOfPicture = $_FILES['item_image']['tmp_name'];
 						$section = explode(".", $_FILES['item_image']['name']);
 						$extension = end($section);
-						$newNamePicture = $itemID . "-" . $_POST['item_name'] . "." . $extension;
+						$newNamePicture = $_POST['item_name'] . "." . $extension;
 						if (empty($nameOfPicture)) {
 							$imagePath = "/img/no-image.png";
 						} else {
@@ -50,11 +49,10 @@ class admin extends BaseController
 						move_uploaded_file($nameOfPicture, "./img/articles/" . $newNamePicture);
 						$item = [
 							"name" => $_POST['item_name'],
-							"category" => !empty($_POST['item_category']) ? $_POST['item_category'] : "Not specified",
+							"category_id" => !empty($_POST['item_category']) ? $_POST['item_category'] : "Not specified",
 							"price" => empty($_POST['item_price']) ? "Free" : ($_POST['item_price'] == 0 ? "Free" : $_POST['item_price']),
-							"image" => $imagePath,
+							"image1" => $imagePath,
 							"rating" => !empty($_POST['item_rating']) ? $_POST['item_rating'] : 0,
-							"quantity" => !empty($_POST['item_quantity']) ? $_POST['item_quantity'] : 0,
 							"description" => !empty($_POST['item_description']) ? $_POST['item_description'] : "No Description Available",
 						];
 						$itemModel->addItem($item);
@@ -113,7 +111,7 @@ class admin extends BaseController
 		$itemId = $_POST['item_id'] ?? false;
 		if ($itemId) {
 			$itemModel->deleteItem($itemId);
-			echo "<script>window.location.href='/admin/pages/manage_products';</script>";
+			// echo "<script>window.location.href='/admin/pages/manage_products';</script>";
 		} else {
 			echo "You must specify the item_id.";
 			echo "<script>window.location.href='/admin/pages/manage_products';</script>";

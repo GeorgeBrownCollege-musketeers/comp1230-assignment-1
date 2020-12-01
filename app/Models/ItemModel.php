@@ -5,21 +5,26 @@ use CodeIgniter\Model;
 class ItemModel extends Model
 {
     public function getItems() {
-        $db = db_connect();
-
-        $query = $db->query("SELECT * FROM ITEMS");
+        $query = $this->db->query("SELECT * FROM ITEMS");
         $results = $query->getResult();
         $items = [];
 
 
         foreach($results as $item){
-            
+            $images = [
+                $item->image1,
+                $item->image2,
+                $item->image3,
+                $item->image4,
+                $item->image5
+            ];
             $items[] = [
                 "id" => $item->id,
-                "name" => $item->title,
-                "category" => $item->cat_id,
+                "name" => $item->name,
+                "category" => $item->category_id,
                 "price" => $item->price,
-                "image" => $item->picture1,
+                "image" => $item->image1,
+                // "images" => $images,
                 "quantity" => 0,
                 "description" => $item->description,
                 "rating" => $item->rating
@@ -28,14 +33,26 @@ class ItemModel extends Model
         return $items;    
     }
 
+    public function getHeader() {
+        return [
+            "id",
+            "name",
+            "category",
+            "price",
+            "image",
+            "rating",
+            "quantity",
+            "description"
+        ];
+    }
+
     public function getItemsWithCategoryId() {
         $categories = $this->getCategories();
         return $categories;
     }
 
     public function getCategories() {
-        $db = db_connect();
-        $query = $db->query("SELECT * FROM categories");
+        $query = $this->db->query("SELECT * FROM categories");
         $results = $query->getResult();
         $categories = [];
 
@@ -52,142 +69,81 @@ class ItemModel extends Model
         return $categories;  
     }
 
-    function getCategoryById($id) {
-        $categories = $this->getCategories();
-        foreach ($categories as $i => $category) {
-            if ($category['id'] === $id) {
-                return $category["name"];
-            }
+    function getCategoryById($id) { # TODO: Check
+        $query = $this->db->query("SELECT * FROM categories WHERE id=$id");
+        $category = $query->getResult()[0];
+        if($category) {
+            return [
+                "id" => $category->id,
+                "name" => $category->name,
+                "description" => $category->description,
+                "status" => $category->status
+            ];
+        } else {
+            return null;
         }
-        return null;
      }
 
     public function deleteItem($itemId) {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
-        $items = $this->getItemsWithCategoryId();
-        $newItems = [];
-        foreach($items as $item) {
-            if ($item["id"] != $itemId) {
-                $newItems[] = $item;
-            } else {
-                if ($item['image'] != '/img/no-image.png') {
-                    unlink("." . $item['image']); // Delete image
-                }
+        $query = $this->db->query("SELECT * FROM items WHERE id=?", $id);
+        $item_to_delete = $query->getResult()[0];
+
+        var_dump($item_to_delete);
+
+
+        if ($item_to_delete) {
+            $this->db->where("id",$id)->delete("items");
+            if ($item_to_delete['picture1'] != '/img/no-image.png') {
+                unlink("." . $item_to_delete['picture1']); // Delete image
             }
+            return true;
+        } else {
+            return false;
         }
-
-        $header = $this->getHeader();
-        $csv = fopen($csvPath,"w");
-
-        fputcsv($csv, $header);
-        foreach($newItems as $item) {
-            fputcsv($csv, $item);
-        }
-        fclose($csv);
     }
-
-    public function getHeader() {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
-        $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
-        $header = array_shift($csv);
-        return $header;
-    }
-
-    public function getCategoryHeader() {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "categories.csv";
-        $csv = array_map("str_getcsv", file($csvPath,FILE_SKIP_EMPTY_LINES));
-        $header = array_shift($csv);
-        return $header;
-    }
-
-    public function generateItemID() {
-        $items = $this->getItems();
-        $last_item_id = intval(array_pop($items)['id']);
-        return $last_item_id + 1;
-    } 
     
     public function addItem($item) {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
-        $handle = fopen($csvPath, "a");
-        $new_item_row = [
-            $this->generateItemID(),
-            $item["name"],
-            $item["category"],
-            $item["price"],
-            $item["image"],
-            $item["rating"],
-            $item["quantity"],
-            $item["description"],
-        ];
-        fputcsv($handle, $new_item_row);
-        fclose($handle);
+        $this->db->table('items')->insert($item); 
     }     
 
     public function getItemsByCategory($category) {
-        $items = $this->getItems();
-        $result = [];
-        foreach($items as $item) {
-            if ($category == $item['category']) {
-                $result[] = $item;
-            }
+        $query = $this->db->query("SELECT * FROM items WHERE category_id=$category");
+        $results = $query->getResult();
+        $items = [];
+
+
+        foreach($results as $item){
+            
+            $items[] = [
+                "id" => $item->id,
+                "name" => $item->title,
+                "category" => $item->category_id,
+                "price" => $item->price,
+                "image" => $item->picture1,
+                "quantity" => 0,
+                "description" => $item->description,
+                "rating" => $item->rating
+            ];
         }
-        return $result;
+        return $items;    
     }
 
-    public function getNumberOfItemsPerCategory($category) {
-        $items = $this->getItems();
-        $result = [];
-        foreach($items as $item) {
-            if ($category == $item['category']) {
-                $result[] = $item;
-            }
-        }
-        return count($result);
+    public function getNumberOfItemsPerCategory($categoryName) {
+        $query = $this->db->query("SELECT * FROM categories WHERE name = ?", $categoryName);
+        $categoryID = $query->getResult()[0]->id;
+
+        $query = $this->db->query("SELECT COUNT(*) as number_of_items FROM items WHERE category_id = ?", $categoryID);
+        $results = $query->getResult()[0];
+        return $results->number_of_items;
     }
 
     public function renameCategory($previousCategoryName, $newCategoryName, $newDescription) {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "categories.csv";
-        $categories = $this->getCategories();
-        $newCategories = [];
-        foreach($categories as $category) {
-            if ($category["name"] == $previousCategoryName) {
-                $category["name"] = $newCategoryName;
-                $category["description"] = $newDescription;
-            }
-            $newCategories[] = $category;
-        }
-
-        $header = $this->getCategoryHeader();
-        $csv = fopen($csvPath,"w");
-
-        fputcsv($csv, $header);
-        foreach($newCategories as $category) {
-            fputcsv($csv, $category);
-        }
-        fclose($csv);
+        $query = $this->db->query("UPDATE categories SET name = ?, description = ? WHERE name = ?", $newCategoryName, $newDescription, $previousCategoryName);
+        return $this->db->affected_rows();
     }
 
-    public function editItem($itemToModify) {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "items.csv";
-        $items = $this->getItemsWithCategoryId();
-        $newItems = [];
-        foreach($items as $item) {
-            if ($item['id'] == $itemToModify['id']) {
-                $newItems[] = $itemToModify;
-            } else {
-                $newItems[] = $item;
-            }
-        }
-        echo "<pre>";
-        var_dump($newItems);
-        $header = $this->getHeader();
-        $csv = fopen($csvPath,"w");
-
-        fputcsv($csv, $header);
-        foreach($newItems as $item) {
-            fputcsv($csv, $item);
-        }
-        fclose($csv);
+    public function editItem($itemToModify) { # TODO
+        
     }
 
     public function generateCategoryID() {
@@ -197,10 +153,11 @@ class ItemModel extends Model
     } 
 
     public function addCategory($name, $description) {
-        $csvPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "categories.csv";
-        $categories = $this->getCategories();
+        $data = [
+            'name' => $name,
+            'description' => $description
+        ];
 
-        $handle = fopen($csvPath, "a");
-        fputcsv($handle, [$this->generateCategoryID(), $name, $description]); 
+        $this->db->table('categories')->insert($data);
     }
 }
