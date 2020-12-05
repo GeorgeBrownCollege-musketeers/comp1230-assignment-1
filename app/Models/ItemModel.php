@@ -85,16 +85,15 @@ class ItemModel extends Model
      }
 
     public function deleteItem($itemId) {
-        $query = $this->db->query("SELECT * FROM items WHERE id=?", $id);
-        $item_to_delete = $query->getResult()[0];
+        $this->db->from('items');
+        $this->db->where('id',$itemId);
 
-        var_dump($item_to_delete);
-
+        $item_to_delete = $this->db->get()->row();
 
         if ($item_to_delete) {
-            $this->db->where("id",$id)->delete("items");
-            if ($item_to_delete['picture1'] != '/img/no-image.png') {
-                unlink("." . $item_to_delete['picture1']); // Delete image
+            $this->db->where("id",$itemId)->delete("items");
+            if ($item_to_delete->picture1 != '/img/no-image.png') {
+                unlink("." . $item_to_delete->picture1); // Delete image
             }
             return true;
         } else {
@@ -138,12 +137,16 @@ class ItemModel extends Model
     }
 
     public function renameCategory($previousCategoryName, $newCategoryName, $newDescription) {
-        $query = $this->db->query("UPDATE categories SET name = ?, description = ? WHERE name = ?", $newCategoryName, $newDescription, $previousCategoryName);
-        return $this->db->affected_rows();
+        $newValues = [
+            'name' => $newCategoryName,
+            'description' => $newDescription
+        ];
+
+        $this->db->table('categories')->where('name',$previousCategoryName)->update($newValues); 
     }
 
     public function editItem($itemToModify) { # TODO
-        
+        $this->db->table('items')->where('id',$itemToModify['id'])->update($itemToModify); 
     }
 
     public function generateCategoryID() {

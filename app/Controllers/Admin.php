@@ -109,9 +109,10 @@ class admin extends BaseController
 	{
 		$itemModel = model('App\Models\ItemModel');
 		$itemId = $_POST['item_id'] ?? false;
+		echo "<script>alert(" . $itemId . ")</script>";
 		if ($itemId) {
 			$itemModel->deleteItem($itemId);
-			// echo "<script>window.location.href='/admin/pages/manage_products';</script>";
+			echo "<script>window.location.href='/admin/pages/manage_products';</script>";
 		} else {
 			echo "You must specify the item_id.";
 			echo "<script>window.location.href='/admin/pages/manage_products';</script>";
@@ -124,15 +125,14 @@ class admin extends BaseController
 		$item = [
 			"id" => $_POST['item_id'],
 			"name" => $_POST['item_name'],
-			"category" => !empty($_POST['item_category']) ? $_POST['item_category'] : "Not specified",
+			"category_id" => $_POST['item_category'],
 			"price" => empty($_POST['item_price']) ? "Free" : ($_POST['item_price'] == 0 ? "Free" : $_POST['item_price']),
-			"image" => !empty($_POST['item_image']) ? $_POST['item_image'] : "/img/no-image.png",
+			"image1" => !empty($_POST['item_image']) ? $_POST['item_image'] : "/img/no-image.png",
 			"rating" => !empty($_POST['item_rating']) ? $_POST['item_rating'] : 0,
-			"quantity" => !empty($_POST['item_quantity']) ? $_POST['item_quantity'] : 0,
 			"description" => !empty($_POST['item_description']) ? $_POST['item_description'] : "No Description Available",
 		];
-		echo "<script>window.location.href='/admin/pages/manage_products';</script>";
 		$itemModel->editItem($item);
+		echo "<script>window.location.href='/admin/pages/manage_products';</script>";
 	}
 
 	public function change_password()

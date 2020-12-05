@@ -92,7 +92,7 @@ $header = $itemModel->getHeader();
                         <?php endforeach ?>
                         <td>
                             <input type="submit" class="btn btn-secondary mt-1" value="Update">
-                            <button class="btn btn-danger mt-1" onclick="deleteItem(<?= $item['id'] ?>)">Delete</button>
+                            <button class="btn btn-danger mt-1" onclick="deleteItem(<?= $item['id'] ?>); return false;">Delete</button>
                         </td>
                     </form>
                 <?php endforeach ?>
@@ -107,10 +107,10 @@ $header = $itemModel->getHeader();
                 $.post("/admin/delete_item", {
                     item_id: id
                 }, function(data) {
+                    console.log(data);
                     location.reload();
                 })
             }
-            return false;
         }
 
         function switchTable() {
