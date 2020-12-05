@@ -41,8 +41,8 @@ class ItemModel extends Model
             "price",
             "image",
             "rating",
-            "quantity",
-            "description"
+            "description",
+            "quantity"
         ];
     }
 
@@ -85,15 +85,12 @@ class ItemModel extends Model
      }
 
     public function deleteItem($itemId) {
-        $this->db->from('items');
-        $this->db->where('id',$itemId);
-
-        $item_to_delete = $this->db->get()->row();
+        $item_to_delete = $this->db->query("SELECT * FROM items WHERE id = ?", $itemId)->getResult()[0];
 
         if ($item_to_delete) {
-            $this->db->where("id",$itemId)->delete("items");
-            if ($item_to_delete->picture1 != '/img/no-image.png') {
-                unlink("." . $item_to_delete->picture1); // Delete image
+            $this->db->simpleQuery("DELETE FROM items WHERE id = $itemId");
+            if ($item_to_delete->image1 != '/img/no-image.png') {
+                unlink("." . $item_to_delete->image1); // Delete image
             }
             return true;
         } else {

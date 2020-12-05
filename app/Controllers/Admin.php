@@ -109,7 +109,6 @@ class admin extends BaseController
 	{
 		$itemModel = model('App\Models\ItemModel');
 		$itemId = $_POST['item_id'] ?? false;
-		echo "<script>alert(" . $itemId . ")</script>";
 		if ($itemId) {
 			$itemModel->deleteItem($itemId);
 			echo "<script>window.location.href='/admin/pages/manage_products';</script>";
