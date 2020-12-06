@@ -15,17 +15,6 @@ class LoginModel extends Model
 
 
         return $credentials;
-       
-
-
-		// $credentialsPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "credentials";
-        // $csv = [];
-
-		// $handle = fopen($credentialsPath , "r");
-		// while (($data = fgets($handle)) !== FALSE) {
-		// 	$csv[explode(":", $data)[0]] = explode(":", $data)[1]; 
-		// }
-        // return $csv;
 	}
     function login($username){
         session_start();
@@ -44,20 +33,7 @@ class LoginModel extends Model
 
     public function changePassword($newPassword) {
         session_start();
-		$username = $_SESSION['username'];
-		$credentialsPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "credentials";
-		$loginModel = model('App\Models\LoginModel');
-        $credentials = $loginModel->getCredentials();
-		
-		$credentials[$username] = md5($newPassword);
-
-		$credentialsFile = fopen($credentialsPath, "w");
-
-		$credentialsTxt = "";
-		foreach($credentials as $user=>$password) {
-			$credentialsTxt .= $user . ":" . $password;
-		}	
-		fwrite($credentialsFile, $credentialsTxt);
-		fclose($credentialsFile);
+        $username = $_SESSION['username'];
+        $this->db->table('members')->where('username',$username)->update(['password'=>md5($newPassword)]);
 	}
 }
