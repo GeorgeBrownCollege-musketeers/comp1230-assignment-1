@@ -5,14 +5,27 @@ use CodeIgniter\Model;
 class LoginModel extends Model
 {
     function getCredentials() {
-		$credentialsPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "credentials";
-        $csv = [];
+        $query = $this->db->query("SELECT * FROM members");
+        $results = $query->getResult();
+        $credentials = [];
 
-		$handle = fopen($credentialsPath , "r");
-		while (($data = fgets($handle)) !== FALSE) {
-			$csv[explode(":", $data)[0]] = explode(":", $data)[1]; 
-		}
-        return $csv;
+        foreach ($results as $credential) {
+            $credentials[$credential->username] = $credential->password;
+        }
+
+
+        return $credentials;
+       
+
+
+		// $credentialsPath = getcwd() . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "data"  . DIRECTORY_SEPARATOR . "credentials";
+        // $csv = [];
+
+		// $handle = fopen($credentialsPath , "r");
+		// while (($data = fgets($handle)) !== FALSE) {
+		// 	$csv[explode(":", $data)[0]] = explode(":", $data)[1]; 
+		// }
+        // return $csv;
 	}
     function login($username){
         session_start();
