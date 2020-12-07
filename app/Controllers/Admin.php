@@ -7,8 +7,10 @@ class admin extends BaseController
 	public function index()
 	{
 		$loginModel = model('App\Models\LoginModel');
+		$maintenanceModel = model('App\Models\MaintenanceModel');
 		if ($loginModel->userLoggedIn()) {
-			$this->renderTemplate('admin/index.phtml');
+
+			$this->renderTemplateView(view('admin/index.phtml', ['isUnderMaintenance'=>$maintenanceModel->isUnderMaintenance(), 'maintenanceModel'=>$maintenanceModel]));
 		} else {
 			echo "<script>alert('You have to be logged in to see this page!')</script>";
 			echo "<script>window.location.href='/login';</script>";
@@ -62,6 +64,10 @@ class admin extends BaseController
 					break;
 				case 'change_password':
 					$this->renderTemplate('admin/change_password.phtml');
+					break;
+				case 'switch_maintenance':
+					$maintenanceModel = model('App\Models\MaintenanceModel');
+					$this->renderTemplateView(view('admin/switch_maintenance.phtml', ['maintenanceModel'=>$maintenanceModel]));
 					break;
 				default:
 					echo "page not found";
@@ -154,5 +160,24 @@ class admin extends BaseController
 		$loginModel->logout();
 		echo "<script>alert('You closed your session.')</script>";
 		echo "<script>window.location.href='/';</script>";
+	}
+
+	public function switch_maintenance() {
+		$maintenanceModel = model('App\Models\MaintenanceModel');
+		$message = $_POST['message'] ?? false;
+		$maintenanceModel->setStatus(true);
+		$maintenanceModel->updateMessage($message);
+
+		if ($message) {
+			echo "<script>window.location.href='/admin';</script>";
+		} else {
+			echo "You must specify the message";
+		} 
+	}
+
+	public function switch_maintenance_off() {
+		$maintenanceModel = model('App\Models\MaintenanceModel');
+		$maintenanceModel->setStatus(false);
+		echo "<script>window.location.href='/admin';</script>";
 	}
 }

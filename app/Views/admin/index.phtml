@@ -10,6 +10,11 @@
                 <a href="admin/pages/change_password" class="btn btn-light my-1">Change Password</a>
                 <a href="admin/pages/manage_categories" class="btn btn-light my-1">Manage Categories</a>
                 <a href="admin/pages/manage_products" class="btn btn-light my-1">Manage Products</a>
+                <?php if($isUnderMaintenance):?>
+                    <a href="admin/switch_maintenance_off" class="btn btn-success my-1">Switch Site to Online Mode</a>
+                <?php else:?>
+                    <a href="admin/pages/switch_maintenance" class="btn btn-danger my-1">Switch Site to Maintenance Mode</a>
+                <?php endif;?>
             </div>
         </div>
 

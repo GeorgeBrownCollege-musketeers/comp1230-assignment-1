@@ -1,0 +1,7 @@
+<form method="POST" action="/admin/switch_maintenance">
+    <div class="container bg-dark p-4 my-4">
+        <label class="text-light">Message To Display</label>
+        <input type="text" class="form-control my-2" name="message" placeholder="Maintenance Message..." value="<?= $maintenanceModel->getMessage()?>">
+        <button type="submit" class="btn btn-primary" id="">Change to Maintenance</button>
+    </div>
+</form>

@@ -5,7 +5,7 @@ use CodeIgniter\Model;
 class ItemModel extends Model
 {
     public function getItems() {
-        $query = $this->db->query("SELECT * FROM ITEMS");
+        $query = $this->db->query("SELECT * FROM items");
         $results = $query->getResult();
         $items = [];
 
