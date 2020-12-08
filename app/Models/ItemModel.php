@@ -103,19 +103,19 @@ class ItemModel extends Model
     }     
 
     public function getItemsByCategory($category) {
-        $query = $this->db->query("SELECT * FROM items WHERE category_id= ?", $category);
-        $results = $query->getResult();
+        $category_id = $this->db->query("SELECT * FROM categories WHERE name = ?", $category)->getResult()[0]->id;
+        $items_query = $this->db->query("SELECT * FROM items WHERE category_id = ?", $category_id)->getResult();
         $items = [];
 
 
-        foreach($results as $item){
+        foreach($items_query as $item){
             
             $items[] = [
                 "id" => $item->id,
-                "name" => $item->title,
+                "name" => $item->name,
                 "category" => $item->category_id,
                 "price" => $item->price,
-                "image" => $item->picture1,
+                "image" => $item->image1,
                 "quantity" => 0,
                 "description" => $item->description,
                 "rating" => $item->rating
