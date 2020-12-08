@@ -103,7 +103,7 @@ class ItemModel extends Model
     }     
 
     public function getItemsByCategory($category) {
-        $query = $this->db->query("SELECT * FROM items WHERE category_id=$category");
+        $query = $this->db->query("SELECT * FROM items WHERE category_id= ?", $category);
         $results = $query->getResult();
         $items = [];
 
